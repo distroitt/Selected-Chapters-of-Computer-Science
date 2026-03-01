@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+
+  backend:
+    build: ./backend
+    container_name: django_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - sqlite_data:/app/db
+    restart: unless-stopped
+    environment:
+      SECRET_KEY: test123
+    networks:
+      - app_network
+
+  frontend:
+    build: ./frontend
+    container_name: react_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - app_network
+
+volumes:
+  sqlite_data:
+
+networks:
+  app_network:
+    driver: bridge
