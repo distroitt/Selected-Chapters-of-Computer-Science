@@ -1,0 +1,28 @@
+Задание 6. Pandas, вариант 1 (Titanic)
+
+Часть A. Series gender_series:
+P1      male
+P2    female
+P3      male
+P4    female
+P5    female
+Name: gender_series, dtype: str
+
+Часть B. Информация о датафрейме:
+<class 'pandas.DataFrame'>
+RangeIndex: 10 entries, 0 to 9
+Data columns (total 6 columns):
+ #   Column       Non-Null Count  Dtype
+---  ------       --------------  -----
+ 0   PassengerId  10 non-null     int64
+ 1   Survived     10 non-null     int64
+ 2   Pclass       10 non-null     int64
+ 3   Name         10 non-null     str  
+ 4   Sex          10 non-null     str  
+ 5   Age          10 non-null     int64
+dtypes: int64(4), str(2)
+memory usage: 612.0 bytes
+
+Средний возраст пассажиров 1 класса: 38.33
+Средний возраст пассажиров 3 класса: 22.80
+Во сколько раз средний возраст пассажиров 1-го класса больше, чем у пассажиров 3-го класса: 1.68

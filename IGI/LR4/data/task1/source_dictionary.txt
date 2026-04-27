@@ -1,0 +1,4 @@
+Исходный словарь варианта 1:
+Ноутбук: [{'country': 'Польша', 'volume': 120}, {'country': 'Литва', 'volume': 90}, {'country': 'Германия', 'volume': 50}]
+Монитор: [{'country': 'Латвия', 'volume': 70}, {'country': 'Польша', 'volume': 65}]
+Сканер: [{'country': 'Чехия', 'volume': 40}, {'country': 'Словакия', 'volume': 25}]

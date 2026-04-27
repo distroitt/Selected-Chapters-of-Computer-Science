@@ -1,0 +1,3 @@
+Hello, STUDENT! Are YOU ready for Python LAB? Please read FILES carefully.
+This course mixes English and русский текст. Keep CALM and code ON.
+We also have emoticons here :) ;---]]] :(( and one invalid token ;--.
