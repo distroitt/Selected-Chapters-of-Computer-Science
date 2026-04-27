@@ -1,14 +1,23 @@
 Задание 2. Анализ текста
 
-Индивидуальное задание варианта 1:
-Все заглавные английские буквы:
-H S T U D E N T A Y O U P L A B P F I L E S T E K C A L M O N W
+--- Индивидуальное задание ---
+1. Все заглавные английские буквы: S A M P L E T E X T H S T U D E N T A Y O U P L A B P F I L E S T E K C A L M O N L T O W
+2. Текст с заменой 'a+b{2,}c+' на 'qqq':
+SAMPLE_TEXT = """Hello, STUDENT! Are YOU ready for Python LAB? Please read FILES carefully.
+This course mixes English and русский текст. Keep CALM and code ON.
+Look at these strange sequences: qqq, qqq, and abc. They are weird.
+Our высокотехнологичный approach makes программирование fun, indeed.
+We also have emoticons here :) ;---]]] :(( and one invalid token ;--."""
 
-Общая статистика:
-Количество предложений: 6
-Повествовательных предложений: 4
+3. Количество слов максимальной длины: 1
+4. Слова перед запятой или точкой: Hello, carefully, текст, ON, aabbbc, abbc, abc, weird, fun, indeed
+5. Самое длинное слово, заканчивающееся на 'е': программирование
+
+--- Общая статистика ---
+Количество предложений: 9
+Повествовательных предложений: 7
 Вопросительных предложений: 1
 Побудительных предложений: 1
-Средняя длина предложения в символах (учтены только слова): 25.67
-Средняя длина слова: 4.67
+Средняя длина предложения в символах (учтены только слова): 31.00
+Средняя длина слова: 5.17
 Количество смайликов: 3

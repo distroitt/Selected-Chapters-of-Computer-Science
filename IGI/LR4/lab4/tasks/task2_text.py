@@ -1,9 +1,9 @@
 """Task 2: text processing with regex.
 
 Laboratory work #4: files, classes, serializers, regex and standard libraries.
-Version: 1.0.0
+Version: 1.1.0
 Developer: Dmitry Adarov
-Date: 2026-04-21
+Date: 2026-04-27
 """
 
 from __future__ import annotations
@@ -17,7 +17,6 @@ from pathlib import Path
 from lab4.common.base import ResultSaverMixin, RunnableTask
 from lab4.common.input_utils import ask_path_or_default, print_title
 
-
 DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "task2"
 OUTPUT_DIR = Path(__file__).resolve().parents[2] / "outputs" / "task2"
 DEFAULT_TEXT = DATA_DIR / "source_text.txt"
@@ -25,12 +24,12 @@ DEFAULT_TEXT = DATA_DIR / "source_text.txt"
 WORD_PATTERN = re.compile(r"[A-Za-zА-Яа-яЁё]+(?:-[A-Za-zА-Яа-яЁё]+)?")
 SENTENCE_PATTERN = re.compile(r"[^.!?]+[.!?]+", re.MULTILINE)
 EMOTICON_PATTERN = re.compile(r"(?<![:;\-\(\)\[\]])[:;]-*(?:\(+|\)+|\[+|\]+)(?![:;\-\(\)\[\]])")
+ABC_PATTERN = re.compile(r"a+b{2,}c+") # a...ab...bc...c (a > 0, b > 1, c > 0)
 
 
 @dataclass
 class TextStatistics:
     """Store calculated text statistics."""
-
     sentence_count: int
     narrative_count: int
     question_count: int
@@ -85,29 +84,48 @@ class BaseTextAnalyzer(ABC):
             raise ValueError("Text must not be empty.")
         self._text = cleaned
 
-    @abstractmethod
-    def variant_result(self) -> str:
-        """Return the result of the individual assignment."""
-
 
 class VariantOneTextAnalyzer(BaseTextAnalyzer):
-    """Analyze text for variant 1."""
+    """Analyze text for the extended variant requirements."""
 
-    def variant_result(self) -> str:
-        """Return all uppercase English letters."""
+    def get_uppercase_english(self) -> str:
+        """1. Вывести все заглавные английские буквы."""
         letters = re.findall(r"[A-Z]", self.text)
-        if not letters:
-            return "Заглавные английские буквы не найдены."
-        return " ".join(letters)
+        return " ".join(letters) if letters else "Не найдены."
+
+    def replace_abc_sequence(self) -> str:
+        """2. Заменить последовательность «a…ab…bc…c» на «qqq»."""
+        return ABC_PATTERN.sub("qqq", self.text)
+
+    def count_max_length_words(self) -> int:
+        """3. Определить, сколько слов имеют максимальную длину."""
+        words = WORD_PATTERN.findall(self.text)
+        if not words:
+            return 0
+        max_length = max(len(word) for word in words)
+        return sum(1 for word in words if len(word) == max_length)
+
+    def get_words_before_comma_or_dot(self) -> list[str]:
+        """4. Вывести все слова, за которыми следует запятая или точка."""
+        pattern = re.compile(r"([A-Za-zА-Яа-яЁё]+(?:-[A-Za-zА-Яа-яЁё]+)?)(?=[.,])")
+        return pattern.findall(self.text)
+
+    def get_longest_word_ending_in_e(self) -> str:
+        """5. Найти самое длинное слово, которое заканчивается на 'е' (рус или англ)."""
+        words = WORD_PATTERN.findall(self.text)
+        e_words = [word for word in words if re.search(r"[eе]$", word, re.IGNORECASE)]
+        if not e_words:
+            return "Слова, оканчивающиеся на 'е', не найдены."
+        return max(e_words, key=len)
 
     def calculate_statistics(self) -> TextStatistics:
         """Calculate general text statistics required by the laboratory work."""
         sentences = SENTENCE_PATTERN.findall(self.text)
         words = WORD_PATTERN.findall(self.text)
 
-        narrative_count = sum(1 for sentence in sentences if sentence.strip().endswith("."))
-        question_count = sum(1 for sentence in sentences if sentence.strip().endswith("?"))
-        imperative_count = sum(1 for sentence in sentences if sentence.strip().endswith("!"))
+        narrative_count = sum(1 for sentence in sentences if re.search(r"\.\s*$", sentence))
+        question_count = sum(1 for sentence in sentences if re.search(r"\?\s*$", sentence))
+        imperative_count = sum(1 for sentence in sentences if re.search(r"!\s*$", sentence))
 
         if sentences:
             sentence_lengths = [
@@ -141,15 +159,21 @@ class TextReportBuilder(ResultSaverMixin):
     def build_report(self) -> str:
         """Create a complete report."""
         stats = self.analyzer.calculate_statistics()
+        words_before_punct = self.analyzer.get_words_before_comma_or_dot()
+        words_before_punct_str = ", ".join(words_before_punct) if words_before_punct else "Не найдены"
+
         return "\n".join(
             [
                 "Задание 2. Анализ текста",
                 "",
-                "Индивидуальное задание варианта 1:",
-                "Все заглавные английские буквы:",
-                self.analyzer.variant_result(),
+                "--- Индивидуальное задание ---",
+                f"1. Все заглавные английские буквы: {self.analyzer.get_uppercase_english()}",
+                f"2. Текст с заменой 'a+b{{2,}}c+' на 'qqq':\n{self.analyzer.replace_abc_sequence()}\n",
+                f"3. Количество слов максимальной длины: {self.analyzer.count_max_length_words()}",
+                f"4. Слова перед запятой или точкой: {words_before_punct_str}",
+                f"5. Самое длинное слово, заканчивающееся на 'е': {self.analyzer.get_longest_word_ending_in_e()}",
                 "",
-                "Общая статистика:",
+                "--- Общая статистика ---",
                 f"Количество предложений: {stats.sentence_count}",
                 f"Повествовательных предложений: {stats.narrative_count}",
                 f"Вопросительных предложений: {stats.question_count}",

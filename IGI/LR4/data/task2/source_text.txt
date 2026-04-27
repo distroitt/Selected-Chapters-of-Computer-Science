@@ -1,3 +1,5 @@
-Hello, STUDENT! Are YOU ready for Python LAB? Please read FILES carefully.
+SAMPLE_TEXT = """Hello, STUDENT! Are YOU ready for Python LAB? Please read FILES carefully.
 This course mixes English and русский текст. Keep CALM and code ON.
-We also have emoticons here :) ;---]]] :(( and one invalid token ;--.
+Look at these strange sequences: aabbbc, abbc, and abc. They are weird.
+Our высокотехнологичный approach makes программирование fun, indeed.
+We also have emoticons here :) ;---]]] :(( and one invalid token ;--."""

@@ -10,19 +10,25 @@ Name: gender_series, dtype: str
 
 Часть B. Информация о датафрейме:
 <class 'pandas.DataFrame'>
-RangeIndex: 10 entries, 0 to 9
-Data columns (total 6 columns):
- #   Column       Non-Null Count  Dtype
----  ------       --------------  -----
- 0   PassengerId  10 non-null     int64
- 1   Survived     10 non-null     int64
- 2   Pclass       10 non-null     int64
- 3   Name         10 non-null     str  
- 4   Sex          10 non-null     str  
- 5   Age          10 non-null     int64
-dtypes: int64(4), str(2)
-memory usage: 612.0 bytes
+RangeIndex: 891 entries, 0 to 890
+Data columns (total 12 columns):
+ #   Column       Non-Null Count  Dtype  
+---  ------       --------------  -----  
+ 0   PassengerId  891 non-null    int64  
+ 1   Survived     891 non-null    int64  
+ 2   Pclass       891 non-null    int64  
+ 3   Name         891 non-null    str    
+ 4   Sex          891 non-null    str    
+ 5   Age          714 non-null    float64
+ 6   SibSp        891 non-null    int64  
+ 7   Parch        891 non-null    int64  
+ 8   Ticket       891 non-null    str    
+ 9   Fare         891 non-null    float64
+ 10  Cabin        204 non-null    str    
+ 11  Embarked     889 non-null    str    
+dtypes: float64(2), int64(5), str(5)
+memory usage: 83.7 KB
 
-Средний возраст пассажиров 1 класса: 38.33
-Средний возраст пассажиров 3 класса: 22.80
-Во сколько раз средний возраст пассажиров 1-го класса больше, чем у пассажиров 3-го класса: 1.68
+Средний возраст пассажиров 1 класса: 38.23
+Средний возраст пассажиров 3 класса: 25.14
+Во сколько раз средний возраст пассажиров 1-го класса больше, чем у пассажиров 3-го класса: 1.52
