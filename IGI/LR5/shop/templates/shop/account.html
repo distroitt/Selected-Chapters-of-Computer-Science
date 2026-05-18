@@ -1,0 +1,25 @@
+{% extends "shop/base.html" %}
+{% block title %}Личный кабинет{% endblock %}
+{% block content %}
+<h1>Личный кабинет</h1>
+{% if customer %}
+  <p>{{ customer.full_name }}, {{ customer.phone }}</p>
+  <h2>Мои покупки</h2>
+  {% for sale in sales %}
+    <article class="section">
+      <h3>Покупка от {{ sale.sale_date|date:"d/m/Y H:i" }}: {{ sale.total_amount }} BYN</h3>
+      <ul>{% for item in sale.items.all %}<li>{{ item.product.name }} x {{ item.quantity }}</li>{% endfor %}</ul>
+    </article>
+  {% empty %}
+    <p>Покупок пока нет.</p>
+  {% endfor %}
+{% endif %}
+{% if employee %}
+  <p>Сотрудник: {{ employee.full_name }}, {{ employee.position }}</p>
+  <p><a href="{% url 'suppliers' %}">Работа с поставщиками</a> · <a href="{% url 'purchases' %}">Закупки</a></p>
+{% endif %}
+<h2>Точки самовывоза</h2>
+<ul>
+  {% for point in pickups %}<li>{{ point.name }}: {{ point.address }}, {{ point.schedule }}</li>{% endfor %}
+</ul>
+{% endblock %}

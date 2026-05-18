@@ -1,0 +1,14 @@
+{% extends "shop/base.html" %}
+{% block title %}Новости{% endblock %}
+{% block content %}
+<h1>Новости</h1>
+{% for article in articles %}
+  <article class="section">
+    <h2><a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a></h2>
+    <p>{{ article.summary }}</p>
+    <small>{{ article.published_at|date:"d/m/Y" }}</small>
+  </article>
+{% empty %}
+  <p>Новостей пока нет.</p>
+{% endfor %}
+{% endblock %}

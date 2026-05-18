@@ -1,0 +1,20 @@
+{% extends "shop/base.html" %}
+{% block title %}Закупки{% endblock %}
+{% block content %}
+<h1>Закупки у поставщиков</h1>
+<p><a class="button" href="{% url 'purchase_create' %}">Добавить закупку</a></p>
+<table>
+  <tr><th>Дата</th><th>Поставщик</th><th>Товар</th><th>Кол-во</th><th>Цена</th><th>Стоимость</th><th></th></tr>
+  {% for purchase in purchases %}
+    <tr>
+      <td>{{ purchase.purchase_date|date:"d/m/Y" }}</td>
+      <td>{{ purchase.supplier_product.supplier }}</td>
+      <td>{{ purchase.supplier_product.product }}</td>
+      <td>{{ purchase.quantity }}</td>
+      <td>{{ purchase.unit_price }}</td>
+      <td>{{ purchase.total_cost }}</td>
+      <td><a href="{% url 'purchase_update' purchase.pk %}">Изменить</a> <a href="{% url 'purchase_delete' purchase.pk %}">Удалить</a></td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}

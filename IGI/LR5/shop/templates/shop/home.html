@@ -1,0 +1,27 @@
+{% extends "shop/base.html" %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+<h1>Товары для питомцев</h1>
+{% if latest_article %}
+  <section class="section">
+    <h2>Последняя статья</h2>
+    <h3><a href="{% url 'article_detail' latest_article.pk %}">{{ latest_article.title }}</a></h3>
+    <p>{{ latest_article.summary }}</p>
+    <small>{{ latest_article.published_at|date:"d/m/Y" }}</small>
+  </section>
+{% endif %}
+<section class="section">
+  <h2>Популярный каталог</h2>
+  <div class="grid">
+    {% for product in products %}
+      <article class="item">
+        <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+        <p>{{ product.category }}</p>
+        <strong>{{ product.price }} BYN</strong>
+      </article>
+    {% empty %}
+      <p>Товары пока не добавлены.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

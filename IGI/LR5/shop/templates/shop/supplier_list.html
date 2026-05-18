@@ -1,0 +1,18 @@
+{% extends "shop/base.html" %}
+{% block title %}Поставщики{% endblock %}
+{% block content %}
+<h1>Поставщики</h1>
+<p><a class="button" href="{% url 'supplier_create' %}">Добавить поставщика</a></p>
+<table>
+  <tr><th>Название</th><th>Адрес</th><th>Телефон</th><th>Товары</th><th></th></tr>
+  {% for supplier in suppliers %}
+    <tr>
+      <td>{{ supplier.name }}</td>
+      <td>{{ supplier.address }}</td>
+      <td>{{ supplier.phone }}</td>
+      <td>{% for product in supplier.products.all %}{{ product.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+      <td><a href="{% url 'supplier_update' supplier.pk %}">Изменить</a> <a href="{% url 'supplier_delete' supplier.pk %}">Удалить</a></td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}
