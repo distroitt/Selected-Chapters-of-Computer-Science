@@ -1,0 +1,37 @@
+from django.urls import path, re_path
+
+from . import views
+
+urlpatterns = [
+    path("", views.home, name="home"),
+    path("about/", views.about, name="about"),
+    path("news/", views.NewsListView.as_view(), name="news"),
+    re_path(r"^news/(?P<pk>\d+)/$", views.ArticleDetailView.as_view(), name="article_detail"),
+    path("faq/", views.faq, name="faq"),
+    path("contacts/", views.contacts, name="contacts"),
+    path("privacy/", views.privacy, name="privacy"),
+    path("vacancies/", views.vacancies, name="vacancies"),
+    path("promos/", views.promo_codes, name="promos"),
+    path("products/", views.ProductListView.as_view(), name="products"),
+    re_path(r"^products/(?P<pk>\d+)/$", views.ProductDetailView.as_view(), name="product_detail"),
+    path("products/create/", views.ProductCreateView.as_view(), name="product_create"),
+    re_path(r"^products/(?P<pk>\d+)/edit/$", views.ProductUpdateView.as_view(), name="product_update"),
+    re_path(r"^products/(?P<pk>\d+)/delete/$", views.ProductDeleteView.as_view(), name="product_delete"),
+    re_path(r"^products/(?P<pk>\d+)/buy/$", views.buy_product, name="buy_product"),
+    path("suppliers/", views.SupplierListView.as_view(), name="suppliers"),
+    path("suppliers/create/", views.SupplierCreateView.as_view(), name="supplier_create"),
+    re_path(r"^suppliers/(?P<pk>\d+)/edit/$", views.SupplierUpdateView.as_view(), name="supplier_update"),
+    re_path(r"^suppliers/(?P<pk>\d+)/delete/$", views.SupplierDeleteView.as_view(), name="supplier_delete"),
+    path("purchases/", views.PurchaseListView.as_view(), name="purchases"),
+    path("purchases/create/", views.PurchaseCreateView.as_view(), name="purchase_create"),
+    re_path(r"^purchases/(?P<pk>\d+)/edit/$", views.PurchaseUpdateView.as_view(), name="purchase_update"),
+    re_path(r"^purchases/(?P<pk>\d+)/delete/$", views.PurchaseDeleteView.as_view(), name="purchase_delete"),
+    path("register/", views.register, name="register"),
+    path("account/", views.account, name="account"),
+    path("reviews/", views.reviews, name="reviews"),
+    path("reviews/add/", views.add_review, name="add_review"),
+    path("statistics/", views.statistics_view, name="statistics"),
+    path("external-apis/", views.external_apis, name="external_apis"),
+    path("api/products/", views.products_api, name="products_api"),
+    path("api/sales/", views.sales_api, name="sales_api"),
+]

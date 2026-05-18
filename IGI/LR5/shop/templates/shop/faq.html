@@ -1,0 +1,14 @@
+{% extends "shop/base.html" %}
+{% block title %}Словарь{% endblock %}
+{% block content %}
+<h1>Словарь терминов и понятий</h1>
+{% for item in items %}
+  <article class="section">
+    <h2>{{ item.question }}</h2>
+    <p>{{ item.answer }}</p>
+    <small>Добавлено {{ item.created_at|date:"d/m/Y" }}</small>
+  </article>
+{% empty %}
+  <p>Записи пока не добавлены.</p>
+{% endfor %}
+{% endblock %}

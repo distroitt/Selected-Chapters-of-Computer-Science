@@ -1,0 +1,11 @@
+{% extends "shop/base.html" %}
+{% block title %}{{ article.title }}{% endblock %}
+{% block content %}
+<article>
+  <h1>{{ article.title }}</h1>
+  {% if article.image_url %}<img class="wide-img" src="{{ article.image_url }}" alt="{{ article.title }}">{% endif %}
+  <p><strong>{{ article.summary }}</strong></p>
+  <p>{{ article.content|linebreaks }}</p>
+  <small>Опубликовано {{ article.published_at|date:"d/m/Y H:i" }}</small>
+</article>
+{% endblock %}
