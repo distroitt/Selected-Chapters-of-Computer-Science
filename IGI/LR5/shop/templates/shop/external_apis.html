@@ -1,0 +1,12 @@
+{% extends "shop/base.html" %}
+{% block title %}Внешние API{% endblock %}
+{% block content %}
+<h1>Внешние API</h1>
+<p>{{ source_note }}</p>
+<h2>Факт о кошках</h2>
+<p>{{ cat_fact }}</p>
+{% if dog_image %}
+  <h2>Случайное фото собаки</h2>
+  <img class="wide-img" src="{{ dog_image }}" alt="Собака">
+{% endif %}
+{% endblock %}

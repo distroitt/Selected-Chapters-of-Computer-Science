@@ -1,0 +1,10 @@
+[run]
+source = shop
+omit =
+    shop/migrations/*
+    shop/tests/*
+    shop/management/commands/seed_demo.py
+
+[report]
+fail_under = 80
+show_missing = True

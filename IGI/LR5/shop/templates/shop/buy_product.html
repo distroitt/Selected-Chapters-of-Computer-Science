@@ -1,0 +1,13 @@
+{% extends "shop/base.html" %}
+{% block title %}Купить {{ product.name }}{% endblock %}
+{% block content %}
+<h1>Купить {{ product.name }}</h1>
+<p>Цена: {{ product.price }} BYN</p>
+<p>На складе: {{ product.stock_quantity }} шт.</p>
+<p>Промокоды можно посмотреть на странице <a href="{% url 'promos' %}">Промокоды и купоны</a>.</p>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button>Оформить покупку</button>
+</form>
+{% endblock %}

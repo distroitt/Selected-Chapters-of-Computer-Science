@@ -1,0 +1,29 @@
+{% extends "shop/base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+<h1>{{ product.name }}</h1>
+{% if product.image_url %}<img class="wide-img" src="{{ product.image_url }}" alt="{{ product.name }}">{% endif %}
+<p>{{ product.description }}</p>
+<p>Категория: {{ product.category }}</p>
+<p>Артикул: {{ product.sku }}</p>
+<p>Закуплено: {{ product.purchased_quantity }} шт.</p>
+<p>Продано: {{ product.sold_quantity }} шт.</p>
+<p>На складе: {{ product.stock_quantity }} шт.</p>
+<p><strong>{{ product.price }} BYN</strong></p>
+<h2>Поставщики</h2>
+<ul>
+  {% for supplier in product.suppliers.all %}
+    <li>{{ supplier.name }}: {{ supplier.phone }}</li>
+  {% empty %}
+    <li>Поставщики не указаны.</li>
+  {% endfor %}
+</ul>
+{% if user.is_authenticated and product.stock_quantity > 0 %}
+  <p><a class="button" href="{% url 'buy_product' product.pk %}">Купить</a></p>
+{% elif product.stock_quantity <= 0 %}
+  <p><strong>Товар закончился.</strong></p>
+{% endif %}
+{% if user.is_staff %}
+  <p><a href="{% url 'product_update' product.pk %}">Изменить</a> | <a href="{% url 'product_delete' product.pk %}">Удалить</a></p>
+{% endif %}
+{% endblock %}

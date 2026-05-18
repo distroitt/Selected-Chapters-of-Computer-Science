@@ -1,0 +1,13 @@
+{% extends "shop/base.html" %}
+{% block title %}О компании{% endblock %}
+{% block content %}
+<h1>О компании</h1>
+{% if company %}
+  <h2>{{ company.name }}</h2>
+  <p>{{ company.about|linebreaks }}</p>
+  <h3>Реквизиты</h3>
+  <pre>{{ company.requisites }}</pre>
+{% else %}
+  <p>Информация о компании будет добавлена через админ-панель.</p>
+{% endif %}
+{% endblock %}
