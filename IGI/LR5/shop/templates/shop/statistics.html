@@ -1,0 +1,29 @@
+{% extends "shop/base.html" %}
+{% block title %}Статистика{% endblock %}
+{% block content %}
+<h1>Статистика</h1>
+<p>Тайм зона пользователя: {{ timezone_name }}</p>
+<p>Дата локально: {{ now_local|date:"d/m/Y H:i" }}</p>
+<p>Дата UTC: {{ now_utc|date:"d/m/Y H:i" }}</p>
+<h2>Продажи</h2>
+<ul>
+  <li>Общая сумма продаж: {{ total_revenue }} BYN</li>
+  <li>Среднее: {{ mean_total|floatformat:2 }}</li>
+  <li>Медиана: {{ median_total|floatformat:2 }}</li>
+  <li>Мода: {{ mode_total }}</li>
+  <li>Самая популярная категория: {{ popular_category.name|default:"нет данных" }}</li>
+  <li>Самая прибыльная категория: {{ profitable_category.name|default:"нет данных" }}</li>
+</ul>
+<h2>Товары по алфавиту</h2>
+<ol>{% for product in products %}<li>{{ product.name }}: {{ product.price }} BYN</li>{% endfor %}</ol>
+<h2>Распределение проданных товаров по категориям</h2>
+<div class="bars">
+  {% for item in chart_items %}
+    <div><span>{{ item.label }}</span><meter min="0" max="20" value="{{ item.value }}"></meter></div>
+  {% empty %}
+    <p>Недостаточно данных для диаграммы.</p>
+  {% endfor %}
+</div>
+<h2>Календарь</h2>
+<pre>{{ calendar }}</pre>
+{% endblock %}

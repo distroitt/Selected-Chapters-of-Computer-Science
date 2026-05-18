@@ -1,0 +1,14 @@
+{% extends "shop/base.html" %}
+{% block title %}Вакансии{% endblock %}
+{% block content %}
+<h1>Вакансии</h1>
+{% for vacancy in vacancies %}
+  <article class="section">
+    <h2>{{ vacancy.title }}</h2>
+    <p>{{ vacancy.description }}</p>
+    {% if vacancy.salary %}<p><strong>{{ vacancy.salary }}</strong></p>{% endif %}
+  </article>
+{% empty %}
+  <p>Открытых вакансий нет.</p>
+{% endfor %}
+{% endblock %}
