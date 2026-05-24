@@ -2,9 +2,9 @@
 {% block title %}Контакты{% endblock %}
 {% block content %}
 <h1>Контакты сотрудников</h1>
-<div class="grid">
+<div class="grid contact-grid">
 {% for employee in employees %}
-  <article class="item">
+  <article class="item employee-card">
     {% if employee.photo_url %}
       <img class="employee-photo" src="{{ employee.photo_url }}" alt="{{ employee.full_name }}">
     {% endif %}
