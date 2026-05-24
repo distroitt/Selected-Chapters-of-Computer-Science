@@ -139,6 +139,7 @@ class Command(BaseCommand):
                 "position": "Менеджер по поставщикам",
                 "phone": "+375 (33) 765-43-21",
                 "email": "seller@example.com",
+                "photo_url": "https://static.vecteezy.com/system/resources/thumbnails/052/129/001/small/a-beautiful-young-business-woman-in-a-suit-photo.jpg"
             },
         )
 
