@@ -5,7 +5,11 @@
 <div class="grid">
 {% for employee in employees %}
   <article class="item">
-    {% if employee.photo_url %}<img src="{{ employee.photo_url }}" alt="{{ employee.full_name }}">{% endif %}
+    {% if employee.photo_url %}
+      <div class="employee-photo-frame">
+        <img class="employee-photo" src="{{ employee.photo_url }}" alt="{{ employee.full_name }}">
+      </div>
+    {% endif %}
     <h2>{{ employee.full_name }}</h2>
     <p>{{ employee.position }}</p>
     <p>{{ employee.phone }}</p>
