@@ -7,6 +7,8 @@
 <p>{{ cat_fact }}</p>
 {% if dog_image %}
   <h2>Случайное фото собаки</h2>
-  <img class="wide-img" src="{{ dog_image }}" alt="Собака">
+  <div class="api-photo-frame">
+    <img class="api-dog-photo" src="{{ dog_image }}" alt="Случайное фото собаки из Dog CEO API">
+  </div>
 {% endif %}
 {% endblock %}
