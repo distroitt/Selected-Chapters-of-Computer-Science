@@ -6,9 +6,7 @@
 {% for employee in employees %}
   <article class="item">
     {% if employee.photo_url %}
-      <div class="employee-photo-frame">
-        <img class="employee-photo" src="{{ employee.photo_url }}" alt="{{ employee.full_name }}">
-      </div>
+      <img class="employee-photo" src="{{ employee.photo_url }}" alt="{{ employee.full_name }}">
     {% endif %}
     <h2>{{ employee.full_name }}</h2>
     <p>{{ employee.position }}</p>
