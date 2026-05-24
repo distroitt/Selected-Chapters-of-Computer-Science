@@ -50,3 +50,8 @@ jobs:
             --file IGI/LR5/Dockerfile \
             --tag ghcr.io/${{ github.repository_owner }}/igi-lr5:latest \
             --tag ghcr.io/${{ github.repository_owner }}/igi-lr5:${{ github.sha }}
+            
+      - name: Push the Docker image
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/igi-lr5:latest
+          docker push ghcr.io/${{ github.repository_owner }}/igi-lr5:${{ github.sha }}
