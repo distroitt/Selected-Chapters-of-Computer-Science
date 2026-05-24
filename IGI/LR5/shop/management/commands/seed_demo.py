@@ -77,19 +77,19 @@ class Command(BaseCommand):
         ]
 
         product_data = [
-            ("FD-001", "Корм для котят", categories[0], "18.90"),
-            ("FD-002", "Корм для собак крупных пород", categories[0], "45.50"),
-            ("FD-003", "Лакомство с курицей", categories[0], "7.20"),
-            ("TY-001", "Мяч с пищалкой", categories[1], "9.50"),
-            ("TY-002", "Удочка-дразнилка", categories[1], "6.80"),
-            ("TY-003", "Канат для собак", categories[1], "12.40"),
-            ("CR-001", "Шампунь гипоаллергенный", categories[2], "15.00"),
-            ("CR-002", "Когтерез", categories[2], "11.30"),
-            ("EQ-001", "Ошейник светоотражающий", categories[3], "13.70"),
-            ("EQ-002", "Переноска пластиковая", categories[3], "52.00"),
+            ("FD-001", "Корм для котят", categories[0], "18.90", "https://ir.ozone.ru/s3/multimedia-t/c1000/6674384801.jpg"),
+            ("FD-002", "Корм для собак крупных пород", categories[0], "45.50", "https://vetapteki.by/wp-content/uploads/prod/2025/07/G000109817_0_250715.jpg"),
+            ("FD-003", "Лакомство с курицей", categories[0], "7.20", "https://basket-09.wbbasket.ru/vol1276/part127609/127609151/images/big/1.webp"),
+            ("TY-001", "Мяч с пищалкой", categories[1], "9.50", "https://ir.ozone.ru/s3/multimedia-1-h/c1000/7212272741.jpg"),
+            ("TY-002", "Удочка-дразнилка", categories[1], "6.80", "https://ir.ozone.ru/s3/multimedia-v/c1000/6895764499.jpg"),
+            ("TY-003", "Канат для собак", categories[1], "12.40", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsCQ1lwX6O3qWkr8J1y2pkGdCnEmbPh1WvMw&s"),
+            ("CR-001", "Шампунь гипоаллергенный", categories[2], "15.00", "https://ir.ozone.ru/s3/multimedia-6/c1000/6643464882.jpg"),
+            ("CR-002", "Когтерез", categories[2], "11.30", "https://ir.ozone.ru/s3/multimedia-1/6416527741.jpg"),
+            ("EQ-001", "Ошейник светоотражающий", categories[3], "13.70", "https://basket-10.wbbasket.ru/vol1447/part144738/144738307/images/big/1.webp"),
+            ("EQ-002", "Переноска пластиковая", categories[3], "52.00", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSey_Ngd_HZsnpyqhk4_J-yzcwwsQfc-JEZWg&s"),
         ]
         products = []
-        for sku, name, category, price in product_data:
+        for sku, name, category, price, image_url in product_data:
             product, _ = Product.objects.get_or_create(
                 sku=sku,
                 defaults={
@@ -97,6 +97,7 @@ class Command(BaseCommand):
                     "category": category,
                     "price": Decimal(price),
                     "description": f"{name} для ежедневного ухода за питомцем.",
+                    "image_url": image_url,
                 },
             )
             products.append(product)
