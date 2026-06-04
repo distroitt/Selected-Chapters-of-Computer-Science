@@ -3,11 +3,15 @@ from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+os.environ.setdefault("MPLCONFIGDIR", str(BASE_DIR / ".matplotlib"))
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-only-lr5-secret-key")
 DEBUG = os.getenv("DJANGO_DEBUG", "1") == "1"
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS","localhost").split(",")
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    "CSRF_TRUSTED_ORIGINS",
+    "http://localhost,http://127.0.0.1",
+).split(",")
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",

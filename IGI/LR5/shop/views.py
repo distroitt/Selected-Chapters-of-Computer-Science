@@ -1,7 +1,12 @@
+import base64
 import calendar
 import logging
+from io import BytesIO
 from decimal import Decimal
 from statistics import StatisticsError, mean, median, mode
+
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from matplotlib.figure import Figure
 
 from django.contrib import messages
 from django.contrib.auth import login
@@ -36,6 +41,40 @@ from .models import (
 from .services import fetch_pet_api_highlights
 
 logger = logging.getLogger(__name__)
+
+
+def build_category_sales_chart(chart_items):
+    if not chart_items:
+        return ""
+
+    labels = [item["label"] for item in chart_items]
+    values = [item["value"] for item in chart_items]
+    figure_height = max(3.2, len(labels) * 0.55)
+    figure = Figure(figsize=(8, figure_height), dpi=120)
+    axes = figure.subplots()
+
+    bars = axes.barh(labels, values, color="#1d7a55")
+    axes.set_title("Распределение проданных товаров по категориям")
+    axes.set_xlabel("Продано, шт.")
+    axes.invert_yaxis()
+    axes.grid(axis="x", color="#dfe4ea", linewidth=0.8)
+    axes.set_axisbelow(True)
+
+    max_value = max(values) if values else 0
+    axes.set_xlim(0, max_value + max(1, max_value * 0.15))
+    for bar, value in zip(bars, values):
+        axes.text(
+            bar.get_width() + 0.05,
+            bar.get_y() + bar.get_height() / 2,
+            str(value),
+            va="center",
+            fontsize=9,
+        )
+
+    figure.tight_layout()
+    output = BytesIO()
+    FigureCanvasAgg(figure).print_png(output)
+    return base64.b64encode(output.getvalue()).decode("ascii")
 
 
 class StaffRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -421,6 +460,7 @@ def statistics_view(request):
         {"label": item["name"], "value": item["sold_units"] or 0}
         for item in categories
     ]
+    chart_image = build_category_sales_chart(chart_items)
     now_local = timezone.localtime()
     now_utc = timezone.now()
     text_calendar = calendar.TextCalendar(firstweekday=0).formatmonth(now_local.year, now_local.month)
@@ -436,6 +476,7 @@ def statistics_view(request):
         if chart_items
         else None,
         "chart_items": chart_items,
+        "chart_image": chart_image,
         "timezone_name": timezone.get_current_timezone_name(),
         "now_local": now_local,
         "now_utc": now_utc,

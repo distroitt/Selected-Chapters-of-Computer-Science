@@ -12,6 +12,8 @@ from shop.models import (
     Customer,
     Product,
     PromoCode,
+    Sale,
+    SaleItem,
     Supplier,
     SupplierProduct,
     SupplyPurchase,
@@ -157,6 +159,21 @@ class ViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["products"][0]["sku"], "T-1")
+
+    def test_statistics_page_contains_matplotlib_chart(self):
+        sale = Sale.objects.create(customer=self.user.customer_profile)
+        SaleItem.objects.create(
+            sale=sale,
+            product=self.product,
+            quantity=2,
+            unit_price=self.product.price,
+        )
+        self.client.login(username="buyer", password="pass12345")
+
+        response = self.client.get(reverse("statistics"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "data:image/png;base64,")
 
     def test_registration_creates_customer_profile(self):
         response = self.client.post(
