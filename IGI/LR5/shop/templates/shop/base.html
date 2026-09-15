@@ -4,13 +4,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{% block meta_description %}Зоомагазин PetCare Market: товары, уход и полезные материалы для домашних животных.{% endblock %}">
+  <meta name="keywords" content="зоомагазин, товары для животных, корм, игрушки, уход">
+  <meta name="author" content="PetCare Market">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_BY">
+  <meta property="og:title" content="{% block og_title %}PetCare Market{% endblock %}">
   <title>{% block title %}Зоомагазин{% endblock %}</title>
+  <link rel="icon" href="{% static 'images/favicon.svg' %}" type="image/svg+xml">
   <link rel="stylesheet" href="{% static 'style.css' %}">
+  <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"PetStore","name":"PetCare Market","url":"{{ request.build_absolute_uri }}","telephone":"+375291234567","address":{"@type":"PostalAddress","addressLocality":"Минск","addressCountry":"BY"}}
+  </script>
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="{% url 'home' %}">Зоомагазин</a>
-    <nav>
+    <a class="brand" href="{% url 'home' %}" aria-label="PetCare Market, главная">
+      <img src="{% static 'images/logo.svg' %}" alt="" width="42" height="42">
+      <span>PetCare Market</span>
+    </a>
+    <nav aria-label="Основная навигация">
       <a href="{% url 'products' %}">Каталог</a>
       <a href="{% url 'news' %}">Новости</a>
       <a href="{% url 'promos' %}">Промокоды</a>
@@ -18,6 +31,7 @@
       <a href="{% url 'faq' %}">Словарь</a>
       <a href="{% url 'contacts' %}">Контакты</a>
       <a href="{% url 'statistics' %}">Статистика</a>
+      <a href="{% url 'cart' %}">Корзина <span class="cart-count">{{ request.session.cart|length|default:0 }}</span></a>
       {% if user.is_staff %}
         <a href="{% url 'suppliers' %}">Поставщики</a>
         <a href="{% url 'purchases' %}">Закупки</a>
@@ -31,17 +45,21 @@
       {% endif %}
     </nav>
   </header>
-  <main class="container">
+  <main id="content" class="container">
     {% for message in messages %}
       <p class="message">{{ message }}</p>
     {% endfor %}
     {% block content %}{% endblock %}
   </main>
   <footer>
-    <a href="{% url 'about' %}">О компании</a>
-    <a href="{% url 'vacancies' %}">Вакансии</a>
-    <a href="{% url 'privacy' %}">Политика конфиденциальности</a>
-    <a href="{% url 'external_apis' %}">Внешние API</a>
+    <nav aria-label="Дополнительная навигация">
+      <a href="{% url 'about' %}">О компании</a>
+      <a href="{% url 'vacancies' %}">Вакансии</a>
+      <a href="{% url 'privacy' %}">Политика конфиденциальности</a>
+      <a href="{% url 'html_demo' %}">HTML5</a>
+      <a href="{% url 'external_apis' %}">Внешние API</a>
+    </nav>
+    <address>PetCare Market, г. Минск · <a href="tel:+375291234567">+375 (29) 123-45-67</a></address>
   </footer>
 </body>
 </html>

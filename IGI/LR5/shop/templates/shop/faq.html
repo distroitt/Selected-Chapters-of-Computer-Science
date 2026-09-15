@@ -3,11 +3,10 @@
 {% block content %}
 <h1>Словарь терминов и понятий</h1>
 {% for item in items %}
-  <article class="section">
-    <h2>{{ item.question }}</h2>
+  <details class="section">
+    <summary>{{ item.question }} <small>— {{ item.created_at|date:"d/m/Y" }}</small></summary>
     <p>{{ item.answer }}</p>
-    <small>Добавлено {{ item.created_at|date:"d/m/Y" }}</small>
-  </article>
+  </details>
 {% empty %}
   <p>Записи пока не добавлены.</p>
 {% endfor %}
