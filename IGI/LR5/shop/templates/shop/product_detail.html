@@ -22,8 +22,13 @@
     <li>Поставщики не указаны.</li>
   {% endfor %}
 </ul>
-{% if user.is_authenticated and product.stock_quantity > 0 %}
-  <p><a class="button" href="{% url 'buy_product' product.pk %}">Купить</a></p>
+{% if product.stock_quantity > 0 %}
+  <form class="add-cart-form" method="post" action="{% url 'add_to_cart' product.pk %}">
+    {% csrf_token %}
+    <label for="quantity">Количество</label>
+    <input id="quantity" name="quantity" type="number" min="1" max="{{ product.stock_quantity }}" value="1" required>
+    <button type="submit" aria-label="Добавить {{ product.name }} в корзину">🛒 Добавить в корзину</button>
+  </form>
 {% elif product.stock_quantity <= 0 %}
   <p><strong>Товар закончился.</strong></p>
 {% endif %}

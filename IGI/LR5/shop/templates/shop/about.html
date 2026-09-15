@@ -3,10 +3,25 @@
 {% block content %}
 <h1>О компании</h1>
 {% if company %}
-  <h2>{{ company.name }}</h2>
-  <p>{{ company.about|linebreaks }}</p>
+  <article itemscope itemtype="https://schema.org/Organization">
+  <h2 itemprop="name">{{ company.name }}</h2>
+  {% if company.logo_url %}<img class="company-logo" src="{{ company.logo_url }}" alt="Логотип {{ company.name }}" itemprop="logo">{% endif %}
+  <div itemprop="description">{{ company.about|linebreaks }}</div>
+  {% if company.video_url %}
+    <h3>Видео о нашей работе</h3>
+    <video controls preload="metadata"><source src="{{ company.video_url }}" type="video/mp4">Браузер не поддерживает видео.</video>
+  {% endif %}
+  <h3>История по годам</h3>
+  <ol class="timeline">
+    {% for milestone in company.milestones.all %}
+      <li><time datetime="{{ milestone.year }}">{{ milestone.year }}</time> — {{ milestone.description }}</li>
+    {% empty %}<li>История ещё не заполнена.</li>{% endfor %}
+  </ol>
   <h3>Реквизиты</h3>
   <pre>{{ company.requisites }}</pre>
+  <h3>Сертификат</h3>
+  <pre class="certificate">{{ company.certificate_text|default:"Сертификат будет добавлен." }}</pre>
+  </article>
 {% else %}
   <p>Информация о компании будет добавлена через админ-панель.</p>
 {% endif %}

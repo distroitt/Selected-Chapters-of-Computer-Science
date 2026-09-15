@@ -4,10 +4,12 @@ from .models import (
     Article,
     Category,
     CompanyInfo,
+    CompanyMilestone,
     Customer,
     Employee,
     FAQ,
     PickupPoint,
+    Partner,
     PriceChange,
     Product,
     PromoCode,
@@ -115,8 +117,10 @@ class PromoCodeAdmin(admin.ModelAdmin):
 
 admin.site.register(Category)
 admin.site.register(CompanyInfo)
+admin.site.register(CompanyMilestone)
 admin.site.register(FAQ)
 admin.site.register(PickupPoint)
+admin.site.register(Partner)
 admin.site.register(Review)
 admin.site.register(SaleItem)
 admin.site.register(Vacancy)

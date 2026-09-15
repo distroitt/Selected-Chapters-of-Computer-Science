@@ -12,15 +12,24 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db import transaction
 from django.db.models import Count, F, Sum
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from .forms import BuyProductForm, ProductForm, RegisterForm, ReviewForm, SupplierForm, SupplyPurchaseForm
+from .forms import (
+    BuyProductForm,
+    CheckoutForm,
+    ProductForm,
+    RegisterForm,
+    ReviewForm,
+    SupplierForm,
+    SupplyPurchaseForm,
+)
 from .models import (
     Article,
     Category,
@@ -28,6 +37,7 @@ from .models import (
     Customer,
     Employee,
     FAQ,
+    Partner,
     PickupPoint,
     Product,
     PromoCode,
@@ -85,12 +95,166 @@ class StaffRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 def home(request):
     latest_article = Article.objects.order_by("-published_at").first()
     products = Product.objects.select_related("category").order_by("name")[:6]
-    return render(request, "shop/home.html", {"latest_article": latest_article, "products": products})
+    partners = Partner.objects.all()
+    return render(
+        request,
+        "shop/home.html",
+        {"latest_article": latest_article, "products": products, "partners": partners},
+    )
 
 
 def about(request):
-    company = CompanyInfo.objects.order_by("-updated_at").first()
+    company = CompanyInfo.objects.prefetch_related("milestones").order_by("-updated_at").first()
     return render(request, "shop/about.html", {"company": company})
+
+
+def html_demo(request):
+    return render(request, "shop/html_demo.html")
+
+
+def _cart(request):
+    return request.session.setdefault("cart", {})
+
+
+def _cart_lines(request):
+    cart = _cart(request)
+    product_ids = [int(product_id) for product_id in cart if product_id.isdigit()]
+    products = Product.objects.select_related("category").filter(pk__in=product_ids)
+    products_by_id = {str(product.pk): product for product in products}
+    lines = []
+    total = Decimal("0.00")
+    changed = False
+
+    for product_id, raw_quantity in list(cart.items()):
+        product = products_by_id.get(product_id)
+        if product is None:
+            cart.pop(product_id, None)
+            changed = True
+            continue
+        quantity = max(int(raw_quantity), 1)
+        line_total = product.price * quantity
+        lines.append(
+            {
+                "product": product,
+                "quantity": quantity,
+                "line_total": line_total,
+                "available": quantity <= product.stock_quantity,
+            }
+        )
+        total += line_total
+
+    if changed:
+        request.session.modified = True
+    return lines, total
+
+
+@require_POST
+def add_to_cart(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    try:
+        quantity = max(int(request.POST.get("quantity", 1)), 1)
+    except (TypeError, ValueError):
+        quantity = 1
+
+    cart = _cart(request)
+    product_id = str(product.pk)
+    new_quantity = int(cart.get(product_id, 0)) + quantity
+    if product.stock_quantity <= 0:
+        messages.error(request, "Товар закончился.")
+    elif new_quantity > product.stock_quantity:
+        messages.error(request, f"На складе доступно только {product.stock_quantity} шт.")
+    else:
+        cart[product_id] = new_quantity
+        request.session.modified = True
+        messages.success(request, f"«{product.name}» добавлен в корзину.")
+    return redirect(request.POST.get("next") or "cart")
+
+
+def cart_detail(request):
+    lines, total = _cart_lines(request)
+    return render(request, "shop/cart.html", {"lines": lines, "total": total})
+
+
+@require_POST
+def update_cart(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    cart = _cart(request)
+    product_id = str(product.pk)
+    current = int(cart.get(product_id, 0))
+    action = request.POST.get("action")
+    quantity = current + 1 if action == "increase" else current - 1
+
+    if quantity <= 0:
+        cart.pop(product_id, None)
+    elif quantity > product.stock_quantity:
+        messages.error(request, f"На складе доступно только {product.stock_quantity} шт.")
+    else:
+        cart[product_id] = quantity
+    request.session.modified = True
+    return redirect("cart")
+
+
+@require_POST
+def remove_from_cart(request, pk):
+    cart = _cart(request)
+    cart.pop(str(pk), None)
+    request.session.modified = True
+    messages.success(request, "Товар удалён из корзины.")
+    return redirect("cart")
+
+
+@login_required
+def checkout(request):
+    customer = getattr(request.user, "customer_profile", None)
+    if customer is None:
+        messages.error(request, "Для оплаты заполните профиль покупателя.")
+        return redirect("account")
+
+    lines, total = _cart_lines(request)
+    if not lines:
+        messages.error(request, "Корзина пуста.")
+        return redirect("cart")
+
+    form = CheckoutForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        cart = _cart(request)
+        with transaction.atomic():
+            locked_products = {
+                str(product.pk): product
+                for product in Product.objects.select_for_update().filter(
+                    pk__in=[line["product"].pk for line in lines]
+                )
+            }
+            for product_id, quantity in cart.items():
+                product = locked_products.get(product_id)
+                if product is None or int(quantity) > product.stock_quantity:
+                    messages.error(
+                        request,
+                        f"Недостаточно товара «{product.name if product else product_id}». Проверьте корзину.",
+                    )
+                    return redirect("cart")
+
+            sale = Sale.objects.create(customer=customer, promo_code=form.cleaned_data["promo_code"])
+            for product_id, quantity in cart.items():
+                product = locked_products[product_id]
+                SaleItem.objects.create(
+                    sale=sale,
+                    product=product,
+                    quantity=int(quantity),
+                    unit_price=product.price,
+                )
+
+        request.session["cart"] = {}
+        logger.info(
+            "User %s paid sale %s with card ending %s",
+            request.user.username,
+            sale.pk,
+            form.cleaned_data["card_number"][-4:],
+        )
+        messages.success(request, f"Оплата принята. Заказ №{sale.pk} создан.")
+        return redirect("account")
+
+    return render(request, "shop/checkout.html", {"form": form, "lines": lines, "total": total})
 
 
 class NewsListView(ListView):

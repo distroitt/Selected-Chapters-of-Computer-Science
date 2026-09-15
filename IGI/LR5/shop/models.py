@@ -256,10 +256,52 @@ class CompanyInfo(TimeStampedModel):
     about = models.TextField("о компании")
     requisites = models.TextField("реквизиты", blank=True)
     logo_url = models.URLField("логотип", blank=True)
+    video_url = models.URLField("видео о компании", blank=True)
+    certificate_text = models.TextField("текст сертификата", blank=True)
 
     class Meta:
         verbose_name = "информация о компании"
         verbose_name_plural = "информация о компании"
+
+    def __str__(self):
+        return self.name
+
+
+class CompanyMilestone(TimeStampedModel):
+    company = models.ForeignKey(
+        CompanyInfo,
+        on_delete=models.CASCADE,
+        related_name="milestones",
+        verbose_name="компания",
+    )
+    year = models.PositiveSmallIntegerField("год")
+    description = models.CharField("событие", max_length=255)
+
+    class Meta:
+        verbose_name = "этап истории компании"
+        verbose_name_plural = "история компании"
+        ordering = ["year"]
+        constraints = [
+            models.UniqueConstraint(fields=["company", "year"], name="unique_company_milestone_year")
+        ]
+
+    def __str__(self):
+        return f"{self.year}: {self.description}"
+
+
+class Partner(TimeStampedModel):
+    name = models.CharField("название", max_length=160, unique=True)
+    website_url = models.URLField("сайт")
+    logo_path = models.CharField(
+        "путь к логотипу",
+        max_length=255,
+        help_text="Путь относительно static, например images/partners/purina.svg",
+    )
+
+    class Meta:
+        verbose_name = "компания-партнёр"
+        verbose_name_plural = "компании-партнёры"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
