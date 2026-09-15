@@ -1,0 +1,16 @@
+{% extends "shop/base.html" %}
+{% block title %}Промокоды{% endblock %}
+{% block content %}
+<h1>Промокоды и купоны</h1>
+<table>
+  <tr><th>Код</th><th>Скидка</th><th>Срок</th><th>Статус</th></tr>
+  {% for promo in promos %}
+    <tr>
+      <td>{{ promo.code }}</td>
+      <td>{{ promo.discount_percent }}%</td>
+      <td>{{ promo.valid_until|date:"d/m/Y" }}</td>
+      <td>{% if promo.active %}действует{% else %}архив{% endif %}</td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}
