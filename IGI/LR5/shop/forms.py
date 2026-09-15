@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-from .models import Customer, Product, PromoCode, Review, SaleItem, Supplier, SupplyPurchase
+from .models import Customer, PickupPoint, Product, PromoCode, Review, SaleItem, Supplier, SupplyPurchase
 from .models import phone_validator
 from .validators import validate_adult
 
@@ -140,3 +140,74 @@ class BuyProductForm(forms.ModelForm):
         if promo.valid_until < timezone.localdate():
             raise forms.ValidationError("Срок действия промокода истек.")
         return promo
+
+
+class CheckoutForm(forms.Form):
+    delivery_method = forms.ChoiceField(
+        label="Способ получения",
+        choices=(("pickup", "Самовывоз"), ("courier", "Доставка курьером")),
+        widget=forms.RadioSelect,
+    )
+    pickup_point = forms.ModelChoiceField(
+        label="Точка самовывоза",
+        queryset=PickupPoint.objects.none(),
+        required=False,
+    )
+    address = forms.CharField(label="Адрес доставки", max_length=255, required=False)
+    cardholder = forms.CharField(label="Имя владельца карты", max_length=120)
+    card_number = forms.CharField(
+        label="Номер карты",
+        max_length=19,
+        widget=forms.TextInput(
+            attrs={"inputmode": "numeric", "autocomplete": "cc-number", "pattern": "[0-9 ]{16,19}"}
+        ),
+    )
+    expiry = forms.CharField(
+        label="Срок действия",
+        max_length=5,
+        widget=forms.TextInput(attrs={"placeholder": "MM/ГГ", "pattern": "(0[1-9]|1[0-2])/[0-9]{2}"}),
+    )
+    cvv = forms.CharField(
+        label="CVV",
+        min_length=3,
+        max_length=3,
+        widget=forms.PasswordInput(attrs={"inputmode": "numeric", "autocomplete": "cc-csc", "pattern": "[0-9]{3}"}),
+    )
+    promo_code = forms.CharField(label="Промокод", max_length=40, required=False)
+    accept_terms = forms.BooleanField(label="Согласен с условиями оплаты")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["pickup_point"].queryset = PickupPoint.objects.all()
+
+    def clean_card_number(self):
+        number = self.cleaned_data["card_number"].replace(" ", "")
+        if not number.isdigit() or len(number) != 16:
+            raise forms.ValidationError("Номер карты должен содержать 16 цифр.")
+        return number
+
+    def clean_cvv(self):
+        cvv = self.cleaned_data["cvv"]
+        if not cvv.isdigit():
+            raise forms.ValidationError("CVV должен содержать 3 цифры.")
+        return cvv
+
+    def clean_promo_code(self):
+        code = self.cleaned_data["promo_code"].strip()
+        if not code:
+            return None
+        promo = PromoCode.objects.filter(code__iexact=code).first()
+        if promo is None:
+            raise forms.ValidationError("Такого промокода нет.")
+        if not promo.active or promo.valid_until < timezone.localdate():
+            raise forms.ValidationError("Промокод недействителен.")
+        return promo
+
+    def clean(self):
+        cleaned_data = super().clean()
+        method = cleaned_data.get("delivery_method")
+        if method == "pickup" and not cleaned_data.get("pickup_point"):
+            self.add_error("pickup_point", "Выберите точку самовывоза.")
+        if method == "courier" and not cleaned_data.get("address", "").strip():
+            self.add_error("address", "Укажите адрес доставки.")
+        return cleaned_data

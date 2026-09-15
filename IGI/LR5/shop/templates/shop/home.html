@@ -1,7 +1,14 @@
 {% extends "shop/base.html" %}
+{% load static %}
 {% block title %}Главная{% endblock %}
+{% block meta_description %}Главная страница PetCare Market: акции, популярные товары, новости и партнёры.{% endblock %}
 {% block content %}
 <h1>Товары для питомцев</h1>
+<section class="banner-strip" aria-label="Акции магазина">
+  <img src="{% static 'images/banner-care.svg' %}" alt="Забота о питомце каждый день">
+  <img src="{% static 'images/banner-delivery.svg' %}" alt="Доставка заказов по Минску">
+  <img src="{% static 'images/banner-sale.svg' %}" alt="Скидка по промокоду PET10">
+</section>
 {% if latest_article %}
   <section class="section">
     <h2>Последняя статья</h2>
@@ -26,6 +33,19 @@
       </article>
     {% empty %}
       <p>Товары пока не добавлены.</p>
+    {% endfor %}
+  </div>
+</section>
+<section class="section" itemscope itemtype="https://schema.org/Organization">
+  <h2>Наши партнёры</h2>
+  <div class="partner-grid">
+    {% for partner in partners %}
+      <a class="partner" href="{{ partner.website_url }}" target="_blank" rel="noopener" itemprop="member">
+        <img src="{% static partner.logo_path %}" alt="Логотип {{ partner.name }}">
+        <span>{{ partner.name }}</span>
+      </a>
+    {% empty %}
+      <p>Партнёры добавляются через админ-панель.</p>
     {% endfor %}
   </div>
 </section>

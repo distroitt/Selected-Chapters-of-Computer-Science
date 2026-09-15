@@ -9,10 +9,12 @@ from shop.models import (
     Article,
     Category,
     CompanyInfo,
+    CompanyMilestone,
     Customer,
     Employee,
     FAQ,
     PickupPoint,
+    Partner,
     PriceChange,
     Product,
     PromoCode,
@@ -379,6 +381,8 @@ class Command(BaseCommand):
         customer = customer_user.customer_profile
 
         for index, product in enumerate(products[:5]):
+            if SaleItem.objects.filter(sale__customer=customer, product=product).exists():
+                continue
             sale = Sale.objects.create(
                 customer=customer,
                 employee=employee,
@@ -391,13 +395,38 @@ class Command(BaseCommand):
                 unit_price=product.price,
             )
 
-        CompanyInfo.objects.get_or_create(
+        company, _ = CompanyInfo.objects.update_or_create(
             name="PetCare Market",
             defaults={
                 "about": "Зоомагазин продает корма, игрушки, средства ухода и аксессуары для домашних животных.",
                 "requisites": "УНП 123456789\nIBAN BY00TEST00000000000000000000",
+                "logo_url": "https://placehold.co/600x240/145c43/ffffff?text=PetCare+Market",
+                "video_url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+                "certificate_text": "СЕРТИФИКАТ КАЧЕСТВА № PC-2026\nPetCare Market подтверждает соблюдение требований к хранению и реализации товаров для животных.",
             },
         )
+
+        for year, description in [
+            (2019, "Открыт первый магазин в Минске."),
+            (2021, "Запущен онлайн-каталог и самовывоз."),
+            (2024, "Ассортимент расширен до 500 наименований."),
+            (2026, "Запущены корзина, онлайн-оплата и доставка."),
+        ]:
+            CompanyMilestone.objects.update_or_create(
+                company=company,
+                year=year,
+                defaults={"description": description},
+            )
+
+        for name, website_url, logo_path in [
+            ("Purina", "https://www.purina.com/", "images/partners/purina.svg"),
+            ("Royal Canin", "https://www.royalcanin.com/", "images/partners/royal-canin.svg"),
+            ("Beaphar", "https://www.beaphar.com/", "images/partners/beaphar.svg"),
+        ]:
+            Partner.objects.update_or_create(
+                name=name,
+                defaults={"website_url": website_url, "logo_path": logo_path},
+            )
 
         Article.objects.get_or_create(
             title="Как выбрать корм для питомца",
