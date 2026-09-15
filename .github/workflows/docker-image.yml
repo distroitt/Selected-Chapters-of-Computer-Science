@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "IGI_LR5" ]
+    branches: [ "STRWEB_LR1" ]
   pull_request:
-    branches: [ "IGI_LR5" ]
+    branches: [ "STRWEB_LR1" ]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -24,10 +24,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r IGI/LR5/requirements.txt
+          pip install -r STRWEB/LR1/requirements.txt
 
       - name: Run tests
-        working-directory: IGI/LR5
+        working-directory: STRWEB/LR1
         run: pytest
 
   build:
@@ -48,8 +48,8 @@ jobs:
         run: |
           docker build IGI/LR5/ \
             --file IGI/LR5/Dockerfile \
-            --tag ghcr.io/${{ github.repository_owner }}/igi-lr5:latest \
-            --tag ghcr.io/${{ github.repository_owner }}/igi-lr5:${{ github.sha }}
+            --tag ghcr.io/${{ github.repository_owner }}/strweb-lr1:latest \
+            --tag ghcr.io/${{ github.repository_owner }}/strweb-lr1:${{ github.sha }}
             
       - name: Push the Docker image
         run: |
