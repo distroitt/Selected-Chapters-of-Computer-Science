@@ -1,0 +1,10 @@
+INFO 2026-09-15 23:06:50,265 shop.views: User buyer requested products API
+INFO 2026-09-15 23:06:52,487 shop.views: User buyer paid sale 1 with card ending 4444
+WARNING 2026-09-15 23:06:53,465 shop.views: User buyer failed to buy product T-1: * promo_code
+  * Срок действия промокода истек.
+INFO 2026-09-15 23:06:56,213 shop.views: User buyer bought product T-1 quantity 2 with promo PET10
+INFO 2026-09-15 23:06:57,135 shop.views: User buyer bought product T-1 quantity 2 without promo
+INFO 2026-09-15 23:06:58,710 shop.views: Registered new customer user newbuyer
+INFO 2026-09-15 23:06:59,612 shop.views: Staff user staff created supplier Pet Supply
+WARNING 2026-09-15 23:07:01,569 shop.views: User buyer failed to buy product T-1: * quantity
+  * На складе доступно только 5 шт.
