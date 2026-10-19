@@ -8,8 +8,7 @@
   <select name="category">
     <option value="">Все категории</option>
     {% for category in categories %}
-    <option value="{{ category.id }}" {% if query.category==category.id|stringformat:"s" %}selected{% endif %}>{{
-      category.name }}</option>
+    <option value="{{ category.id }}" {% if query.category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
     {% endfor %}
   </select>
   <input name="min_price" value="{{ query.min_price }}" type="number" step="0.01" min="0" placeholder="Цена от">
