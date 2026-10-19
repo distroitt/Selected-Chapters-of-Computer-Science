@@ -1,10 +1,12 @@
 {% load static %}
 <!doctype html>
 <html lang="ru">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="{% block meta_description %}Зоомагазин PetCare Market: товары, уход и полезные материалы для домашних животных.{% endblock %}">
+  <meta name="description"
+    content="{% block meta_description %}Зоомагазин PetCare Market: товары, уход и полезные материалы для домашних животных.{% endblock %}">
   <meta name="keywords" content="зоомагазин, товары для животных, корм, игрушки, уход">
   <meta name="author" content="PetCare Market">
   <meta property="og:type" content="website">
@@ -20,6 +22,7 @@
     {"@context":"https://schema.org","@type":"PetStore","name":"PetCare Market","url":"{{ request.build_absolute_uri }}","telephone":"+375291234567","address":{"@type":"PostalAddress","addressLocality":"Минск","addressCountry":"BY"}}
   </script>
 </head>
+
 <body>
   <header class="site-header">
     <a class="brand" href="{% url 'home' %}" aria-label="PetCare Market, главная">
@@ -37,21 +40,21 @@
       <a href="{% url 'statistics' %}">Статистика</a>
       <a href="{% url 'cart' %}">Корзина <span class="cart-count">{{ request.session.cart|length|default:0 }}</span></a>
       {% if user.is_staff %}
-        <a href="{% url 'suppliers' %}">Поставщики</a>
-        <a href="{% url 'purchases' %}">Закупки</a>
+      <a href="{% url 'suppliers' %}">Поставщики</a>
+      <a href="{% url 'purchases' %}">Закупки</a>
       {% endif %}
       {% if user.is_authenticated %}
-        <a href="{% url 'account' %}">Кабинет</a>
-        <form class="inline" method="post" action="{% url 'logout' %}">{% csrf_token %}<button>Выйти</button></form>
+      <a href="{% url 'account' %}">Кабинет</a>
+      <form class="inline" method="post" action="{% url 'logout' %}">{% csrf_token %}<button>Выйти</button></form>
       {% else %}
-        <a href="{% url 'login' %}">Войти</a>
-        <a href="{% url 'register' %}">Регистрация</a>
+      <a href="{% url 'login' %}">Войти</a>
+      <a href="{% url 'register' %}">Регистрация</a>
       {% endif %}
     </nav>
   </header>
   <main id="content" class="container">
     {% for message in messages %}
-      <p class="message">{{ message }}</p>
+    <p class="message">{{ message }}</p>
     {% endfor %}
     {% block content %}{% endblock %}
   </main>
@@ -66,4 +69,5 @@
     <address>PetCare Market, г. Минск · <a href="tel:+375291234567">+375 (29) 123-45-67</a></address>
   </footer>
 </body>
+
 </html>

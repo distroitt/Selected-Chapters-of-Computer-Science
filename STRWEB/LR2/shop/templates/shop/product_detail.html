@@ -3,9 +3,9 @@
 {% block content %}
 <h1>{{ product.name }}</h1>
 {% if product.image_url %}
-  <div class="product-photo-frame">
-    <img class="product-detail-photo" src="{{ product.image_url }}" alt="{{ product.name }}">
-  </div>
+<div class="product-photo-frame">
+  <img class="product-detail-photo" src="{{ product.image_url }}" alt="{{ product.name }}">
+</div>
 {% endif %}
 <p>{{ product.description }}</p>
 <p>Категория: {{ product.category }}</p>
@@ -17,22 +17,22 @@
 <h2>Поставщики</h2>
 <ul>
   {% for supplier in product.suppliers.all %}
-    <li>{{ supplier.name }}: {{ supplier.phone }}</li>
+  <li>{{ supplier.name }}: {{ supplier.phone }}</li>
   {% empty %}
-    <li>Поставщики не указаны.</li>
+  <li>Поставщики не указаны.</li>
   {% endfor %}
 </ul>
 {% if product.stock_quantity > 0 %}
-  <form class="add-cart-form" method="post" action="{% url 'add_to_cart' product.pk %}">
-    {% csrf_token %}
-    <label for="quantity">Количество</label>
-    <input id="quantity" name="quantity" type="number" min="1" max="{{ product.stock_quantity }}" value="1" required>
-    <button type="submit" aria-label="Добавить {{ product.name }} в корзину">🛒 Добавить в корзину</button>
-  </form>
-{% elif product.stock_quantity <= 0 %}
-  <p><strong>Товар закончился.</strong></p>
-{% endif %}
-{% if user.is_staff %}
-  <p><a href="{% url 'product_update' product.pk %}">Изменить</a> | <a href="{% url 'product_delete' product.pk %}">Удалить</a></p>
-{% endif %}
-{% endblock %}
+<form class="add-cart-form" method="post" action="{% url 'add_to_cart' product.pk %}">
+  {% csrf_token %}
+  <label for="quantity">Количество</label>
+  <input id="quantity" name="quantity" type="number" min="1" max="{{ product.stock_quantity }}" value="1" required>
+  <button type="submit" aria-label="Добавить {{ product.name }} в корзину">🛒 Добавить в корзину</button>
+</form>
+{% elif product.stock_quantity <= 0 %} <p><strong>Товар закончился.</strong></p>
+  {% endif %}
+  {% if user.is_staff %}
+  <p><a href="{% url 'product_update' product.pk %}">Изменить</a> | <a
+      href="{% url 'product_delete' product.pk %}">Удалить</a></p>
+  {% endif %}
+  {% endblock %}

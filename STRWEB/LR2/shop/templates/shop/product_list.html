@@ -8,7 +8,8 @@
   <select name="category">
     <option value="">Все категории</option>
     {% for category in categories %}
-      <option value="{{ category.id }}" {% if query.category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+    <option value="{{ category.id }}" {% if query.category==category.id|stringformat:"s" %}selected{% endif %}>{{
+      category.name }}</option>
     {% endfor %}
   </select>
   <input name="min_price" value="{{ query.min_price }}" type="number" step="0.01" min="0" placeholder="Цена от">
@@ -23,7 +24,7 @@
   <button>Найти</button>
 </form>
 <div class="grid">
-{% for product in products %}
+  {% for product in products %}
   <article class="item">
     {% if product.image_url %}<img src="{{ product.image_url }}" alt="{{ product.name }}">{% endif %}
     <h2><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h2>
@@ -32,8 +33,8 @@
     <p>На складе: {{ product.stock_quantity }} шт.</p>
     <strong>{{ product.price }} BYN</strong>
   </article>
-{% empty %}
+  {% empty %}
   <p>По запросу ничего не найдено.</p>
-{% endfor %}
+  {% endfor %}
 </div>
 {% endblock %}

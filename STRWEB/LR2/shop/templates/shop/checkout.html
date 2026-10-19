@@ -7,7 +7,6 @@
 <form method="post" class="checkout-form" autocomplete="on">
   {% csrf_token %}
   {{ form.as_p }}
-  <p class="form-note">Учебная форма: платёж не отправляется в банк, а реквизиты карты не сохраняются.</p>
   <button type="submit">Оплатить</button>
 </form>
 {% endblock %}
