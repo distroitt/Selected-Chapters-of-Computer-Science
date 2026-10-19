@@ -3,6 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator, RegexVa
 from django.db import models
 from django.db.models import Sum
 from django.urls import reverse
+from django.utils import timezone
 
 from .validators import validate_adult
 
@@ -190,6 +191,10 @@ class PromoCode(TimeStampedModel):
         verbose_name = "промокод"
         verbose_name_plural = "промокоды и купоны"
         ordering = ["-active", "valid_until"]
+
+    @property
+    def is_valid(self):
+        return self.active and self.valid_until >= timezone.localdate()
 
     def __str__(self):
         return self.code

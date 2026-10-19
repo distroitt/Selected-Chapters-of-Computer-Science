@@ -12,6 +12,9 @@
   <meta property="og:title" content="{% block og_title %}PetCare Market{% endblock %}">
   <title>{% block title %}Зоомагазин{% endblock %}</title>
   <link rel="icon" href="{% static 'images/favicon.svg' %}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'style.css' %}">
   <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"PetStore","name":"PetCare Market","url":"{{ request.build_absolute_uri }}","telephone":"+375291234567","address":{"@type":"PostalAddress","addressLocality":"Минск","addressCountry":"BY"}}
@@ -25,6 +28,7 @@
     </a>
     <nav aria-label="Основная навигация">
       <a href="{% url 'products' %}">Каталог</a>
+      <a href="{% url 'about' %}">О компании</a>
       <a href="{% url 'news' %}">Новости</a>
       <a href="{% url 'promos' %}">Промокоды</a>
       <a href="{% url 'reviews' %}">Отзывы</a>
@@ -56,7 +60,7 @@
       <a href="{% url 'about' %}">О компании</a>
       <a href="{% url 'vacancies' %}">Вакансии</a>
       <a href="{% url 'privacy' %}">Политика конфиденциальности</a>
-      <a href="{% url 'html_demo' %}">HTML5</a>
+      <a href="{% url 'html_demo' %}">HTML / CSS</a>
       <a href="{% url 'external_apis' %}">Внешние API</a>
     </nav>
     <address>PetCare Market, г. Минск · <a href="tel:+375291234567">+375 (29) 123-45-67</a></address>

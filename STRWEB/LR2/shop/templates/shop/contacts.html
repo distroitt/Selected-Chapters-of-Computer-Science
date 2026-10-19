@@ -8,11 +8,11 @@
     {% if employee.photo_url %}
       <img class="employee-photo" src="{{ employee.photo_url }}" alt="{{ employee.full_name }}">
     {% endif %}
-    <h2>{{ employee.full_name }}</h2>
+    <div class="employee-info"><h2>{{ employee.full_name }}</h2>
     <p>{{ employee.position }}</p>
-    <p>{{ employee.phone }}</p>
+    <p><a href="tel:{{ employee.phone }}">{{ employee.phone }}</a></p>
     <p><a href="mailto:{{ employee.email }}">{{ employee.email }}</a></p>
-  </article>
+  </div></article>
 {% empty %}
   <p>Сотрудники пока не добавлены.</p>
 {% endfor %}

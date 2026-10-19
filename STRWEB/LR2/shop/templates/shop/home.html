@@ -3,18 +3,28 @@
 {% block title %}Главная{% endblock %}
 {% block meta_description %}Главная страница PetCare Market: акции, популярные товары, новости и партнёры.{% endblock %}
 {% block content %}
-<h1>Товары для питомцев</h1>
+<p class="eyebrow">Забота начинается с малого</p>
+<h1>Всё для счастливых питомцев</h1>
+<section class="aquarium" aria-label="Анимация аквариума: рыбки плывут, водоросли колышутся">
+  <span class="aquarium-light" aria-hidden="true"></span>
+  <div class="fish fish-one" aria-hidden="true"><span></span></div>
+  <div class="fish fish-two" aria-hidden="true"><span></span></div>
+  <div class="fish fish-three" aria-hidden="true"><span></span></div>
+  <div class="seaweed weed-one" aria-hidden="true"></div><div class="seaweed weed-two" aria-hidden="true"></div><div class="seaweed weed-three" aria-hidden="true"></div>
+  <div class="bubble bubble-one" aria-hidden="true"></div><div class="bubble bubble-two" aria-hidden="true"></div>
+  <p class="aquarium-title">PetCare Market<span>Маленький мир большой заботы</span></p>
+</section>
 <section class="banner-strip" aria-label="Акции магазина">
   <img src="{% static 'images/banner-care.svg' %}" alt="Забота о питомце каждый день">
   <img src="{% static 'images/banner-delivery.svg' %}" alt="Доставка заказов по Минску">
   <img src="{% static 'images/banner-sale.svg' %}" alt="Скидка по промокоду PET10">
 </section>
 {% if latest_article %}
-  <section class="section">
+  <section class="section latest-article">
     <h2>Последняя статья</h2>
     <h3><a href="{% url 'article_detail' latest_article.pk %}">{{ latest_article.title }}</a></h3>
     <p>{{ latest_article.summary }}</p>
-    <small>{{ latest_article.published_at|date:"d/m/Y" }}</small>
+    <small class="latest-date">{{ latest_article.published_at|date:"d/m/Y" }}</small>
   </section>
 {% endif %}
 <section class="section">
@@ -49,4 +59,5 @@
     {% endfor %}
   </div>
 </section>
+<section class="preloader-section" aria-label="Предзагрузчик страницы"><div class="preloader" role="img" aria-label="Вращающийся индикатор загрузки"></div><p>Загружаем мир заботы…</p></section>
 {% endblock %}
