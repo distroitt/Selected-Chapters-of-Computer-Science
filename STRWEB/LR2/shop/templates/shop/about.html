@@ -4,26 +4,34 @@
 {% block content %}
 <h1>О компании</h1>
 {% if company %}
-  <article itemscope itemtype="https://schema.org/Organization">
+<article itemscope itemtype="https://schema.org/Organization">
   <h2 itemprop="name">{{ company.name }}</h2>
   <img class="company-logo" src="{% static 'images/logo.svg' %}" alt="Логотип {{ company.name }}" itemprop="logo">
   <div itemprop="description">{{ company.about|linebreaks }}</div>
   {% if company.video_url %}
-    <h3>Видео о нашей работе</h3>
-    <video controls preload="metadata"><source src="{{ company.video_url }}" type="video/mp4">Браузер не поддерживает видео.</video>
+  <h3>Видео о нашей работе</h3>
+  <video controls preload="metadata">
+    <source src="{{ company.video_url }}" type="video/mp4">Браузер не поддерживает видео.
+  </video>
   {% endif %}
   <h3>История по годам</h3>
   <ol class="timeline">
     {% for milestone in company.milestones.all %}
-      <li><time datetime="{{ milestone.year }}">{{ milestone.year }}</time> — {{ milestone.description }}</li>
+    <li><time datetime="{{ milestone.year }}">{{ milestone.year }}</time> — {{ milestone.description }}</li>
     {% empty %}<li>История ещё не заполнена.</li>{% endfor %}
   </ol>
   <h3>Реквизиты</h3>
   <pre class="requisites">{{ company.requisites }}</pre>
   <h3>Сертификат</h3>
-  <section class="certificate" aria-label="Сертификат качества"><p class="certificate-label">PetCare Market · Качество и забота</p><h4>Сертификат качества</h4><p>{{ company.certificate_text|default:"Сертификат будет добавлен."|linebreaksbr }}</p><span class="certificate-seal">PC<br>2026</span><p class="certificate-note">Учебный образец</p></section>
-  </article>
+  <section class="certificate" aria-label="Сертификат качества">
+    <p class="certificate-label">PetCare Market · Качество и забота</p>
+    <h4>Сертификат качества</h4>
+    <p>{{ company.certificate_text|default:"Сертификат будет добавлен."|linebreaksbr }}</p><span
+      class="certificate-seal">PC<br>2026</span>
+    <p class="certificate-note">Учебный образец</p>
+  </section>
+</article>
 {% else %}
-  <p>Информация о компании будет добавлена через админ-панель.</p>
+<p>Информация о компании будет добавлена через админ-панель.</p>
 {% endif %}
 {% endblock %}

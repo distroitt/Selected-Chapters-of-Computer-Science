@@ -1,16 +1,18 @@
 {% extends "shop/base.html" %}
 {% block title %}Новости{% endblock %}
 {% block content %}
-<p class="eyebrow">Журнал PetCare</p><h1>Жизнь с питомцем</h1>
+<p class="eyebrow">Журнал PetCare</p>
+<h1>Жизнь с питомцем</h1>
 <div class="grid news-grid">
-{% for article in articles %}
+  {% for article in articles %}
   <article class="section news-card">
     {% if article.image_url %}<img src="{{ article.image_url }}" alt="{{ article.title }}" loading="lazy">{% endif %}
     <div class="news-card-body"><small>{{ article.published_at|date:"d/m/Y" }}</small>
-    <h2><a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a></h2>
-    <p class="news-summary" title="{{ article.summary }}">{{ article.summary }}</p>
-    <a class="button" href="{% url 'article_detail' article.pk %}">Читать далее</a></div>
+      <h2><a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a></h2>
+      <p class="news-summary" title="{{ article.summary }}">{{ article.summary }}</p>
+      <a class="button" href="{% url 'article_detail' article.pk %}">Читать далее</a>
+    </div>
   </article>
-{% empty %}<p>Новостей пока нет.</p>{% endfor %}
+  {% empty %}<p>Новостей пока нет.</p>{% endfor %}
 </div>
 {% endblock %}

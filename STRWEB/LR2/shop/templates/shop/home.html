@@ -10,8 +10,11 @@
   <div class="fish fish-one" aria-hidden="true"><span></span></div>
   <div class="fish fish-two" aria-hidden="true"><span></span></div>
   <div class="fish fish-three" aria-hidden="true"><span></span></div>
-  <div class="seaweed weed-one" aria-hidden="true"></div><div class="seaweed weed-two" aria-hidden="true"></div><div class="seaweed weed-three" aria-hidden="true"></div>
-  <div class="bubble bubble-one" aria-hidden="true"></div><div class="bubble bubble-two" aria-hidden="true"></div>
+  <div class="seaweed weed-one" aria-hidden="true"></div>
+  <div class="seaweed weed-two" aria-hidden="true"></div>
+  <div class="seaweed weed-three" aria-hidden="true"></div>
+  <div class="bubble bubble-one" aria-hidden="true"></div>
+  <div class="bubble bubble-two" aria-hidden="true"></div>
   <p class="aquarium-title">PetCare Market<span>Маленький мир большой заботы</span></p>
 </section>
 <section class="banner-strip" aria-label="Акции магазина">
@@ -20,29 +23,29 @@
   <img src="{% static 'images/banner-sale.svg' %}" alt="Скидка по промокоду PET10">
 </section>
 {% if latest_article %}
-  <section class="section latest-article">
-    <h2>Последняя статья</h2>
-    <h3><a href="{% url 'article_detail' latest_article.pk %}">{{ latest_article.title }}</a></h3>
-    <p>{{ latest_article.summary }}</p>
-    <small class="latest-date">{{ latest_article.published_at|date:"d/m/Y" }}</small>
-  </section>
+<section class="section latest-article">
+  <h2>Последняя статья</h2>
+  <h3><a href="{% url 'article_detail' latest_article.pk %}">{{ latest_article.title }}</a></h3>
+  <p>{{ latest_article.summary }}</p>
+  <small class="latest-date">{{ latest_article.published_at|date:"d/m/Y" }}</small>
+</section>
 {% endif %}
 <section class="section">
   <h2>Популярный каталог</h2>
   <div class="grid">
     {% for product in products %}
-      <article class="item">
-        {% if product.image_url %}
-          <a href="{{ product.get_absolute_url }}">
-            <img src="{{ product.image_url }}" alt="{{ product.name }}">
-          </a>
-        {% endif %}
-        <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
-        <p>{{ product.category }}</p>
-        <strong>{{ product.price }} BYN</strong>
-      </article>
+    <article class="item">
+      {% if product.image_url %}
+      <a href="{{ product.get_absolute_url }}">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}">
+      </a>
+      {% endif %}
+      <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+      <p>{{ product.category }}</p>
+      <strong>{{ product.price }} BYN</strong>
+    </article>
     {% empty %}
-      <p>Товары пока не добавлены.</p>
+    <p>Товары пока не добавлены.</p>
     {% endfor %}
   </div>
 </section>
@@ -50,14 +53,17 @@
   <h2>Наши партнёры</h2>
   <div class="partner-grid">
     {% for partner in partners %}
-      <a class="partner" href="{{ partner.website_url }}" target="_blank" rel="noopener" itemprop="member">
-        <img src="{% static partner.logo_path %}" alt="Логотип {{ partner.name }}">
-        <span>{{ partner.name }}</span>
-      </a>
+    <a class="partner" href="{{ partner.website_url }}" target="_blank" rel="noopener" itemprop="member">
+      <img src="{% static partner.logo_path %}" alt="Логотип {{ partner.name }}">
+      <span>{{ partner.name }}</span>
+    </a>
     {% empty %}
-      <p>Партнёры добавляются через админ-панель.</p>
+    <p>Партнёры добавляются через админ-панель.</p>
     {% endfor %}
   </div>
 </section>
-<section class="preloader-section" aria-label="Предзагрузчик страницы"><div class="preloader" role="img" aria-label="Вращающийся индикатор загрузки"></div><p>Загружаем мир заботы…</p></section>
+<section class="preloader-section" aria-label="Предзагрузчик страницы">
+  <div class="preloader" role="img" aria-label="Вращающийся индикатор загрузки"></div>
+  <p>Загружаем мир заботы…</p>
+</section>
 {% endblock %}
