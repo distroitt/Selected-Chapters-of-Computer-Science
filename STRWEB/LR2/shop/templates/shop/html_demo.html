@@ -1,6 +1,6 @@
 {% extends "shop/base.html" %}
 {% load static %}
-{% block title %}HTML5 в PetCare Market{% endblock %}
+{% block title %}HTML и CSS в PetCare Market{% endblock %}
 {% block meta_description %}Примеры семантических элементов HTML5, форм, таблиц и мультимедиа.{% endblock %}
 {% block content %}
 <div class="demo-layout">
@@ -8,11 +8,13 @@
     <nav class="vertical-nav" aria-label="Разделы HTML5"><strong>На странице</strong><a href="#text">Текст</a><a href="#lists">Списки</a><a href="#table">Таблица</a><a href="#form">Форма</a><a href="#media">Медиа</a></nav>
   </aside>
   <article>
-    <header><h1>HTML5 в PetCare Market</h1><p>Страница демонстрирует семантическую вёрстку и элементы из задания.</p></header>
+    <header><h1>HTML и CSS в PetCare Market</h1><p>Страница демонстрирует семантическую вёрстку и элементы из задания.</p></header>
     <section id="text" class="section">
       <h2>Семантика текста</h2>
       <p><abbr title="HyperText Markup Language">HTML</abbr> задаёт структуру, а <dfn>семантика</dfn> объясняет смысл элемента. Важные слова можно <mark>выделить</mark>, а артикул — записать как <code>FD-001</code>.</p>
       <blockquote cite="https://www.w3.org/standards/webdesign/htmlcss"><p>Хорошая разметка описывает содержание, а не его внешний вид.</p></blockquote>
+      <p><q lang="ru">Забота о питомце каждый день</q> · <q lang="en">Care for every paw</q> · <q lang="fr">Prendre soin des animaux</q></p>
+      <p class="context-note">Подбирайте товары с учётом потребностей питомца.</p>
       <p>Обновлено <time datetime="2026-09-15T20:00:00+03:00">15.09.2026 в 20:00</time>.</p>
       <p class="poem">Лапы тихо ходят по дому,<br>Тёплый свет остался в окне.<br>Мы заботу дарим питомцу,<br>И он становится ближе вдвойне.</p>
       <p>Перенос длинного слова: гиперсупермега<wbr>зоомагазин.</p>
@@ -22,19 +24,19 @@
     </section>
     <section id="lists" class="section">
       <h2>Списки и ссылки</h2>
-      <div class="columns"><div><h3>Уход за питомцем</h3><ol><li>Подобрать корм.</li><li>Обеспечить воду.</li><li>Запланировать осмотр.</li></ol></div><div><h3>Виды товаров</h3><ul><li>корма;</li><li>игрушки;</li><li>амуниция.</li></ul></div></div>
+      <div class="columns"><div><h3>Уход за питомцем</h3><ol><li>Подобрать корм.</li><li>Обеспечить воду.</li><li>Запланировать осмотр.</li></ol></div><div><h3>Виды товаров</h3><ul class="paw-list"><li>корма;</li><li>игрушки;</li><li>амуниция.</li></ul></div></div>
       <dl><dt>Артикул</dt><dd>Уникальный код товара.</dd><dt>Промокод</dt><dd>Код, дающий скидку на заказ.</dd></dl>
       <p><a href="{% url 'products' %}">Внутренняя ссылка</a> · <a href="https://www.w3.org/" target="_blank" rel="noopener">Внешняя ссылка</a> · <a href="mailto:hello@petcare.example">Email</a> · <a href="tel:+375291234567">Телефон</a> · <a href="{% static 'documents/privacy.txt' %}" download>Скачать файл</a></p>
     </section>
     <section id="table" class="section">
       <h2>Таблица данных</h2>
-      <div class="table-wrap"><table><caption>Сравнение категорий товаров</caption><thead><tr><th id="category" scope="col" rowspan="2">Категория</th><th id="range" scope="colgroup" colspan="2">Диапазон</th><th id="stock" scope="col" rowspan="2">Остаток</th></tr><tr><th id="min" scope="col">От, BYN</th><th id="max" scope="col">До, BYN</th></tr></thead><tbody><tr><th id="food" scope="row">Корма</th><td headers="food range min">7.20</td><td headers="food range max">45.50</td><td headers="food stock">42</td></tr><tr><th id="toys" scope="row">Игрушки</th><td headers="toys range min">6.80</td><td headers="toys range max">12.40</td><td headers="toys stock">31</td></tr></tbody><tfoot><tr><th scope="row" colspan="3">Всего товаров</th><td>73</td></tr></tfoot></table></div>
+      <div class="table-wrap"><table><caption>Сравнение категорий товаров</caption><thead><tr><th id="category" scope="col" rowspan="2">Категория</th><th id="range" scope="colgroup" colspan="2">Диапазон</th><th id="stock" scope="col" rowspan="2">Остаток</th></tr><tr><th id="min" scope="col">От, BYN</th><th id="max" scope="col">До, BYN</th></tr></thead><tbody><tr><th id="food" scope="row">Корма</th><td headers="food range min">7.20</td><td headers="food range max">45.50</td><td headers="food stock">42</td></tr><tr><th id="toys" scope="row">Игрушки</th><td headers="toys range min">6.80</td><td headers="toys range max">12.40</td><td headers="toys stock">31</td></tr><tr><th scope="row">Аксессуары</th><td></td><td>52.00</td><td>0</td></tr></tbody><tfoot><tr><th scope="row" colspan="3">Всего товаров</th><td>73</td></tr></tfoot></table></div>
     </section>
     <section id="form" class="section">
       <h2>Демонстрационная форма</h2>
       <form class="demo-form" method="get" action="#form">
-        <fieldset><legend>Контактные данные</legend><label>Имя <input name="name" required minlength="2" maxlength="40" placeholder="Анна" autofocus></label><label>Email <input name="email" type="email" required autocomplete="email"></label><label>Телефон <input name="phone" type="tel" pattern="\+375 \([0-9]{2}\) [0-9]{3}-[0-9]{2}-[0-9]{2}" placeholder="+375 (29) 123-45-67"></label><label>Дата <input name="date" type="date" min="2026-01-01"></label></fieldset>
-        <fieldset><legend>Опрос</legend><label>Питомец <input name="pet" list="pets"></label><datalist id="pets"><option value="Кошка"><option value="Собака"><option value="Грызун"></datalist><label>Тема <select name="topic" required><option value="">Выберите</option><optgroup label="Покупка"><option>Товар</option><option>Доставка</option></optgroup><optgroup label="Сервис"><option>Консультация</option></optgroup></select></label><label>Оценка <input name="rating" type="range" min="1" max="5" value="5"></label><div><span>Способ ответа:</span><label><input name="reply" type="radio" value="email" checked> Email</label><label><input name="reply" type="radio" value="phone"> Телефон</label></div><label><input name="copy" type="checkbox"> Прислать копию</label><label>Сообщение <textarea name="message" required minlength="10" rows="4"></textarea></label></fieldset>
+        <fieldset><legend>Контактные данные</legend><label>Имя <input name="name" required minlength="2" maxlength="40" placeholder="Анна"></label><label>Email <input name="email" type="email" required autocomplete="email"></label><label>Телефон <input name="phone" type="tel" pattern="\+375 \([0-9]{2}\) [0-9]{3}-[0-9]{2}-[0-9]{2}" placeholder="+375 (29) 123-45-67"></label><label>Дата <input name="date" type="date" min="2026-01-01"></label></fieldset>
+        <fieldset><legend>Опрос</legend><label>Питомец <input name="pet" list="pets"></label><datalist id="pets"><option value="Кошка"><option value="Собака"><option value="Грызун"></datalist><label>Тема <select name="topic" required><option value="">Выберите</option><optgroup label="Покупка"><option>Товар</option><option>Доставка</option></optgroup><optgroup label="Сервис"><option>Консультация</option></optgroup></select></label><label>Количество (от 1 до 10) <input name="quantity" type="number" min="1" max="10" value="12"></label><label>Номер клиента <input value="Будет присвоен после регистрации" disabled></label><label>Оценка <input name="rating" type="range" min="1" max="5" value="5"></label><div><span>Способ ответа:</span><label><input name="reply" type="radio" value="email" checked> Email</label><label><input name="reply" type="radio" value="phone"> Телефон</label></div><label><input name="copy" type="checkbox"> Прислать копию</label><label>Сообщение <textarea name="message" required minlength="10" rows="4"></textarea></label></fieldset>
         <p><button type="submit">Отправить</button> <button type="reset" class="secondary">Очистить</button></p>
       </form>
       <p>Заполнение профиля: <progress max="100" value="70">70%</progress>. Уровень лояльности: <meter min="0" max="10" value="8" optimum="10">8 из 10</meter>.</p>

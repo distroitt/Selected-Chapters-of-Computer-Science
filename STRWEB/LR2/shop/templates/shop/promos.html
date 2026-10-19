@@ -2,15 +2,12 @@
 {% block title %}Промокоды{% endblock %}
 {% block content %}
 <h1>Промокоды и купоны</h1>
-<table>
-  <tr><th>Код</th><th>Скидка</th><th>Срок</th><th>Статус</th></tr>
-  {% for promo in promos %}
-    <tr>
-      <td>{{ promo.code }}</td>
-      <td>{{ promo.discount_percent }}%</td>
-      <td>{{ promo.valid_until|date:"d/m/Y" }}</td>
-      <td>{% if promo.active %}действует{% else %}архив{% endif %}</td>
-    </tr>
-  {% endfor %}
-</table>
+<div class="table-wrap"><table class="promo-table">
+  <caption>Скидки PetCare Market — действующие и архивные купоны</caption>
+  <thead><tr><th scope="col">Код</th><th scope="col">Скидка</th><th scope="col">Срок</th><th scope="col">Статус</th></tr></thead>
+  <tbody>{% for promo in promos %}<tr class="{% if promo.is_valid %}promo-active{% else %}promo-archive{% endif %}">
+    <th scope="row">{{ promo.code }}</th><td>{{ promo.discount_percent }}%</td><td>{{ promo.valid_until|date:"d/m/Y" }}</td>
+    <td>{% if promo.is_valid %}действует{% else %}архив{% endif %}</td>
+  </tr>{% empty %}<tr><td colspan="4">Купонов пока нет.</td></tr>{% endfor %}</tbody>
+</table></div>
 {% endblock %}
