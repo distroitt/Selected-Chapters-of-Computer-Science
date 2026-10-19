@@ -18,13 +18,11 @@
     <tbody>
       {% for line in lines %}
       <tr>
-        <th scope="row"><a href="{{ line.product.get_absolute_url }}">{{ line.product.name }}</a>{% if not
-          line.available %}<strong class="error">Нет нужного количества</strong>{% endif %}</th>
+        <th scope="row"><a href="{{ line.product.get_absolute_url }}">{{ line.product.name }}</a>{% if not line.available %}<strong class="error">Нет нужного количества</strong>{% endif %}</th>
         <td>{{ line.product.price }} BYN</td>
         <td>
-          <form class="quantity-controls" method="post" action="{% url 'update_cart' line.product.pk %}">{% csrf_token
-            %}<button name="action" value="decrease" aria-label="Уменьшить количество">−</button><output>{{
-              line.quantity }}</output><button name="action" value="increase"
+          <form class="quantity-controls" method="post" action="{% url 'update_cart' line.product.pk %}">{% csrf_token %}
+            <button name="action" value="decrease" aria-label="Уменьшить количество">−</button><output>{{ line.quantity }}</output><button name="action" value="increase"
               aria-label="Увеличить количество">+</button></form>
         </td>
         <td>{{ line.line_total }} BYN</td>
