@@ -1,0 +1,93 @@
+/* Общие дополнения к собственным стилям LR2. */
+:root { color-scheme: light; --page: #f7f7ef; --surface: #fff; --ink: #203e36; --line: #d4e2d8; --link: #246a53; }
+:root[data-theme="dark"] { color-scheme: dark; --page: #151d19; --surface: #1e2723; --ink: #e3e7e5; --line: #59685e; --link: #9bddba; --green: #83c6a6; --mint: #293d32; }
+html { scroll-padding-top: 100px; scrollbar-gutter: stable; scrollbar-color: var(--line) var(--page); }
+body { background: var(--page); color: var(--ink); }
+a { color: var(--link); }
+[data-theme="dark"] .site-header, [data-theme="dark"] footer, [data-theme="dark"] .section,
+[data-theme="dark"] .item, [data-theme="dark"] .card, [data-theme="dark"] .filters,
+[data-theme="dark"] .contact-card, [data-theme="dark"] .partner, [data-theme="dark"] .message,
+[data-theme="dark"] nav a, [data-theme="dark"] .secondary, [data-theme="dark"] .brand,
+[data-theme="dark"] table, [data-theme="dark"] th, [data-theme="dark"] td,
+[data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] textarea {
+  background-color: var(--surface); color: var(--ink); border-color: var(--line);
+}
+[data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3,
+[data-theme="dark"] small, [data-theme="dark"] caption { color: var(--ink); }
+[data-theme="dark"] .item p, [data-theme="dark"] .latest-date { color: #c1cbc5; }
+[hidden] { display: none !important; }
+button:disabled { cursor: not-allowed; opacity: .6; }
+:focus-visible { outline: 3px solid #bc7c2d; outline-offset: 3px; }
+.site-header { flex-wrap: wrap; }
+#theme-toggle { white-space: nowrap; }
+.toolbar, .pagination { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+.toolbar label { display: grid; gap: 4px; }
+.toolbar input { max-width: 250px; }
+.pagination [aria-current], [data-pages] [aria-current] { background: #1d7a55; color: #fff; border-color: #1d7a55; font-weight: bold; }
+.lab-form { display: grid; gap: 10px; max-width: 620px; margin: 16px 0; }
+.lab-form input, .lab-form textarea, .lab-form select { width: 100%; }
+.lab-form input[type="checkbox"], .builder-field input[type="checkbox"] { width: auto; }
+.lab-form label { display: grid; gap: 6px; }
+.lab-form label:has(input[type="checkbox"]) { display: block; }
+.lab-form button { justify-self: start; }
+input.invalid, input[aria-invalid="true"] { border: 2px solid #b51d37 !important; background: #ffe3eb !important; color: #651027 !important; }
+.status { min-height: 1.6em; overflow-wrap: anywhere; }
+.table-scroll { overflow-x: auto; margin: 16px 0; }
+.table-scroll table { width: 100%; border-collapse: collapse; }
+.table-scroll th, .table-scroll td { padding: 12px; border-bottom: 1px solid var(--line); text-align: left; }
+.table-scroll caption { text-align: left; padding: 12px 0; }
+.table-scroll img { width: 72px; height: 72px; object-fit: cover; border-radius: 6px; }
+#employee-table { min-width: 760px; }
+#employee-table tr:hover td { background: color-mix(in srgb, var(--surface) 90%, #1d7a55 10%); }
+#employee-table th button, .text-button { color: var(--link); border: 0; background: transparent; padding: 6px 0; text-align: left; font: inherit; }
+#employee-table th button { font-weight: bold; }
+#employee-details img { object-fit: cover; }
+.loading-slot { min-height: 48px; margin-top: 12px; }
+#employees-loader { display: flex; gap: 12px; align-items: center; }
+#employees-loader .preloader { display: inline-block; width: 28px; height: 28px; border-width: 4px; margin: 0; }
+.slider figure { margin: 0; }
+.slider figure img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 1; object-fit: cover; }
+.slider figcaption { margin: 12px 0; }
+.slider .toolbar { min-height: 44px; }
+.builder-field { display: grid; gap: 12px; max-width: 620px; margin: 20px 0; padding: 16px 0; border-top: 1px solid var(--line); }
+.builder-field label { display: grid; gap: 6px; }
+.builder-field button { justify-self: start; }
+.chart-container { position: relative; height: 400px; margin: 20px 0; }
+#speech-text { width: 100%; display: block; margin-top: 8px; }
+.pet-flight { display: flex; justify-content: space-evenly; align-items: center; min-height: 340px; overflow: hidden; }
+.pet-flight img { width: 25%; max-width: 160px; height: auto; will-change: transform; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) { .item:focus-within { transform: perspective(800px) rotateY(3deg); } }
+@media (max-width: 600px) {
+  .site-header { padding: 12px; }
+  .toolbar { align-items: stretch; }
+  .toolbar label { width: 100%; }
+  .toolbar input { max-width: 100%; }
+  .slider .toolbar { gap: 8px; }
+  .chart-container { height: 320px; }
+  .pet-flight { min-height: 230px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; scroll-behavior: auto !important; }
+  .pet-flight img, .item { transform: none !important; }
+}
+
+[data-theme="dark"] a:link, [data-theme="dark"] a:visited { color: var(--link); }
+[data-theme="dark"] .button:link, [data-theme="dark"] .button:visited { color: white; }
+[data-theme="dark"] details, [data-theme="dark"] .employee-card,
+[data-theme="dark"] .entry-form, [data-theme="dark"] .vertical-nav,
+[data-theme="dark"] .cart-summary, [data-theme="dark"] blockquote {
+  background: var(--surface); color: var(--ink); border-color: var(--line);
+}
+[data-theme="dark"] tbody tr { background: var(--surface); }
+.table-scroll th { background: var(--mint); color: var(--ink); }
+#employee-table th button:hover, .text-button:hover { color: var(--ink); background: transparent; transform: none; text-decoration: underline; }
+@media (max-width: 820px) { .site-header > nav { flex: 0 1 auto; } .site-header { position: static; } }
+@media (max-height: 500px) { .site-header { position: static; } }
+
+[data-theme="dark"] form p, [data-theme="dark"] .product-photo-frame,
+[data-theme="dark"] .api-photo-frame, [data-theme="dark"] .checkout-form,
+[data-theme="dark"] .cart-count, [data-theme="dark"] fieldset {
+  background: var(--surface); color: var(--ink); border-color: var(--line);
+}
+
+[data-theme="dark"] .pagination a[aria-current] { color: white; }

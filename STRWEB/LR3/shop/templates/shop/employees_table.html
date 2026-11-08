@@ -1,0 +1,54 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Сотрудники{% endblock %}
+{% block scripts %}<script defer src="{% static 'js/employees.js' %}"></script>{% endblock %}
+{% block content %}
+<h1>Сотрудники магазина</h1>
+<p>Нажмите на имя или строку, чтобы открыть карточку сотрудника.</p>
+<form id="employee-search" class="toolbar">
+  <label for="employee-query">Поиск по всем полям</label>
+  <input id="employee-query" type="search" placeholder="Фамилия, работа, телефон или почта">
+  <button>Найти</button>
+</form>
+{% if user.is_staff %}
+<button type="button" id="employee-add" aria-expanded="false" aria-controls="employee-form-panel">Добавить сотрудника</button>
+<div id="employee-form-panel" hidden>
+<form id="employee-form" class="lab-form" method="post" action="{% url 'employees_api' %}" novalidate>
+  {% csrf_token %}
+  <h2>Новый сотрудник</h2>
+  {% for field in contact_form %}
+  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+  {{ field }}
+  {% endfor %}
+  <p>Для URL фотографии в этой лабораторной требуется адрес http(s), заканчивающийся на .php или .html. Если адрес не возвращает изображение, появится логотип магазина.</p>
+  <p>Телефон: 80291112233, 8 (029) 1112233 или +375 (29) 111-22-33.</p>
+  <p id="employee-validation" class="status" role="status"></p>
+  <button type="submit" disabled>Добавить в таблицу</button>
+</form>
+</div>
+{% else %}
+<p>Добавление сотрудников доступно администратору. <a href="{% url 'login' %}?next={% url 'employees_table' %}">Войти</a></p>
+{% endif %}
+<div class="loading-slot"><div id="employees-loader" role="status"><span class="preloader"></span> Выполняем операцию…</div></div>
+<p id="employees-status" class="status" role="status"></p>
+<button type="button" id="employees-retry" hidden>Повторить загрузку</button>
+<div class="table-scroll">
+<table id="employee-table" data-url="{% url 'employees_api' %}">
+  <caption>Контакты сотрудников · до 3 записей на странице</caption>
+  <thead><tr>
+    <th scope="col">Выбор</th>
+    <th scope="col"><button type="button" data-sort="full_name">ФИО<span></span></button></th>
+    <th scope="col"><button type="button" data-sort="position">Выполняемые работы<span></span></button></th>
+    <th scope="col"><button type="button" data-sort="phone">Телефон<span></span></button></th>
+    <th scope="col"><button type="button" data-sort="email">Почта<span></span></button></th>
+    <th scope="col"><button type="button" data-sort="photo_url">Фото<span></span></button></th>
+  </tr></thead>
+  <tbody></tbody>
+</table>
+</div>
+<nav id="employees-pages" class="pagination" aria-label="Страницы сотрудников"></nav>
+<div class="toolbar"><p id="selection-count" role="status">Выбрано: 0</p><button type="button" id="bonus-button" disabled>Премировать</button></div>
+<p id="bonus-result" class="status" role="status"></p>
+<section id="employee-details" class="section" aria-live="polite"><h2>Карточка сотрудника</h2><p>Выберите строку таблицы.</p></section>
+<noscript><p>Для интерактивной таблицы включите JavaScript. Обычный список доступен на странице <a href="{% url 'contacts' %}">Контакты</a>.</p></noscript>
+{% endblock %}

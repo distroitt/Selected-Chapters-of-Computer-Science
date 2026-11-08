@@ -1,0 +1,11 @@
+{% extends "shop/base.html" %}
+{% block title %}Удаление{% endblock %}
+{% block content %}
+<h1>Удаление</h1>
+<p>Удалить объект "{{ object }}"?</p>
+<form method="post">
+  {% csrf_token %}
+  <button>Удалить</button>
+  <a href="javascript:history.back()">Отмена</a>
+</form>
+{% endblock %}

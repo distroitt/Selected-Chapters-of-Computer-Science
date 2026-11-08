@@ -1,0 +1,12 @@
+{% extends "shop/base.html" %}
+{% block title %}Оплата заказа{% endblock %}
+{% block content %}
+<h1>Оплата заказа</h1>
+<p><strong>К оплате: {{ total }} BYN</strong></p>
+<ul>{% for line in lines %}<li>{{ line.product.name }} — {{ line.quantity }} шт.</li>{% endfor %}</ul>
+<form method="post" class="checkout-form" autocomplete="on">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Оплатить</button>
+</form>
+{% endblock %}

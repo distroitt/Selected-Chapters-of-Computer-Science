@@ -1,0 +1,67 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Практикум JavaScript · вариант 1{% endblock %}
+{% block scripts %}
+<script defer src="{% static 'vendor/chart.umd.js' %}"></script>
+<script defer src="{% static 'js/lab-core.js' %}"></script>
+<script defer src="{% static 'js/lab.js' %}"></script>
+<script defer src="{% static 'js/chart.js' %}"></script>
+{% endblock %}
+{% block content %}
+<h1>Практикум JavaScript</h1>
+<p>Лабораторная работа 3 · вариант 1</p>
+<nav aria-label="Задания практикума"><a href="#constructor">Элементы формы</a><a href="#age">Дата рождения</a><a href="#inheritance">Наследование</a><a href="#speech">Синтез речи</a><a href="#series">График функции</a></nav>
+<section id="constructor" class="section">
+<h2>Конструктор текстовых полей</h2>
+<p>Отметьте флажок, чтобы создать поле. Повторите для добавления нескольких полей. Изменения сохраняются в этом браузере.</p>
+<label><input type="checkbox" id="generate-field"> Создать текстовое поле</label>
+<p id="builder-status" class="status" role="status"></p>
+<div id="field-builder"></div>
+</section>
+<section id="age" class="section">
+<h2>Возраст и день недели</h2>
+<form id="birth-form" class="lab-form">
+<label for="birth-date">Дата рождения</label><input id="birth-date" name="birth_date" type="date" min="1900-01-01" required>
+<button>Рассчитать возраст</button>
+</form><p id="birth-result" class="status" role="status"></p>
+</section>
+<section id="inheritance" class="section">
+<h2>Однофамильцы в школе</h2>
+<p>Базовый ученик содержит имя и фамилию, наследник добавляет класс. У каждого класса есть геттер, сеттер, добавление из формы, вывод массива и вывод результата.</p>
+<label for="inheritance-style">Реализация</label>
+<select id="inheritance-style"><option value="class">class / extends</option><option value="prototype">Функции-конструкторы / прототипы</option></select>
+<p>При смене реализации загружается отдельный демонстрационный массив.</p>
+<form id="pupils-form" class="lab-form">
+<label>Имя <input name="name" maxlength="80" required></label>
+<label>Фамилия <input name="surname" maxlength="80" required></label>
+<label>Класс <input name="schoolClass" placeholder="8А" maxlength="4" pattern="(?:[1-9]|1[01])[А-Яа-яA-Za-z]" required></label>
+<button>Добавить ученика</button>
+</form>
+<button type="button" id="pupils-demo" class="secondary">Восстановить пример</button>
+<ul id="pupils-list"></ul><p id="pupils-result" class="status" role="status"></p>
+</section>
+<section id="speech" class="section">
+<h2>Синтез речи · Web Speech API</h2>
+<label for="speech-text">Текст для чтения</label>
+<textarea id="speech-text" rows="3" maxlength="1000">Добро пожаловать в PetCare Market! Позаботьтесь о своих питомцах.</textarea>
+<div class="toolbar"><button type="button" id="speech-start">Прочитать текст</button><button type="button" id="speech-stop" class="secondary">Остановить</button></div>
+<p id="speech-status" class="status" role="status"></p>
+</section>
+<section id="series" class="section">
+<h2>Разложение функции в ряд · вариант 1</h2>
+<p><code>ln((x + 1) / (x − 1)) = 2 Σ 1 / ((2n + 1) x^(2n + 1)), n = 0…∞, |x| &gt; 1</code></p>
+<p>В таблице n — число просуммированных членов. Суммирование продолжается, пока оценка остатка ряда не станет меньше ε.</p>
+<form id="series-form" class="toolbar">
+<label>От x <input name="start" type="number" step="any" value="1.2" required></label>
+<label>До x <input name="end" type="number" step="any" value="4" required></label>
+<label>Шаг <input name="step" type="number" step="any" min="0.001" value="0.2" required></label>
+<label>Точность ε <input name="epsilon" type="number" step="any" min="1e-12" max="0.1" value="0.00000001" required></label>
+<button>Построить график</button>
+</form>
+<p id="chart-status" class="status" role="status"></p>
+<div class="chart-container"><canvas id="series-chart" role="img" aria-label="Графики суммы ряда и Math.log. Точные значения приведены в таблице ниже."></canvas></div>
+<button type="button" id="chart-save" disabled>Сохранить график PNG</button>
+<div class="table-scroll"><table id="series-table"><caption>Результаты разложения функции</caption><thead><tr><th scope="col">x</th><th scope="col">F(x), ряд</th><th scope="col">n</th><th scope="col">Math F(x)</th><th scope="col">Абсолютная ошибка</th></tr></thead><tbody></tbody></table></div>
+</section>
+<noscript><p>Для выполнения заданий включите JavaScript в браузере.</p></noscript>
+{% endblock %}
